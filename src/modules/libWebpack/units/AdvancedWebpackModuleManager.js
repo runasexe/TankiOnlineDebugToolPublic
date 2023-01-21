@@ -1,4 +1,4 @@
-const { WebpackModuleManager } = require('./WebpackModuleManager');
+const { WebpackModuleManager } = require('./webpackModuleManager');
 
 class AdvancedWebpackModuleManager extends WebpackModuleManager {
     getExports(searchData, resultOnce) {
