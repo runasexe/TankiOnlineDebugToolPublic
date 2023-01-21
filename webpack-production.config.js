@@ -2,11 +2,12 @@ const path = require('path');
 const TerserPlugin = require("terser-webpack-plugin");
 const { getEntryPoints } = require('./webpack-build');
 
-let buildId = 'production';
-let configBuild = [];
-let configData = getEntryPoints(buildId);
+const buildMode = 'production';
+const buildId = buildMode;
+const configBuild = [];
+const configData = getEntryPoints(buildId);
 
-for (let configKey in configData) {
+for (const configKey in configData) {
     configBuild.push({
         name: buildId + '-' + configKey,
         mode: buildId,

@@ -2,11 +2,12 @@ const path = require('path');
 
 const { getEntryPoints } = require('./webpack-build');
 
-let buildId = 'development';
-let configBuild = [];
-let configData = getEntryPoints(buildId);
+const buildMode = 'development';
+const buildId = buildMode;
+const configBuild = [];
+const configData = getEntryPoints(buildId);
 
-for (let configKey in configData) {
+for (const configKey in configData) {
     configBuild.push({
         name: buildId + '-' + configKey,
         mode: buildId,

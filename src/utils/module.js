@@ -1,5 +1,6 @@
 const { connectContext } = require('./context');
 const { moduleListenerName } = require('/config/moduleConnection');
+const { sharedCore } = require('./features');
 
 class ListenerRegisterEvent extends Event {
     status = null;
@@ -44,10 +45,15 @@ const moduleSendContext = ((shareContext, shareKey, moduleTemplate) => {
         shareContext[shareKey](moduleTemplate);
     }
 });
+const moduleSendDirect = ((moduleTemplate) => {
+    sharedCore.coreContext.moduleListener.installModuleTemplate(moduleTemplate);
+});
 
 
 const moduleSend = ((shareContext, shareKey, moduleTemplate) => {
-    if(shareContext instanceof EventTarget) {
+    if(sharedCore.enabled && sharedCore.coreContext) {
+        moduleSendDirect(moduleTemplate);
+    } else if(shareContext instanceof EventTarget) {
         moduleSendEvent(shareContext, shareKey, moduleTemplate);
     } else {
         moduleSendContext(shareContext, shareKey, moduleTemplate);

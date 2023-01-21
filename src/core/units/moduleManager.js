@@ -175,6 +175,8 @@ class ModuleManagerSignalManager {
      * Процедура загрузки модулей
      */
     async signalModulesLoad() {
+        // Инициализация модуля
+        await Promise.all(this.callModuleSignal('init'));
         // Регистрация обработчиков событий
         await Promise.all(this.callModuleSignal('event'));
         // Загрузка модуля, создание объектов взаимодействия
@@ -322,7 +324,7 @@ const unitSignals = {
     }),
     // Добавление стандартного обработчика при импорте модуля
     load: ((coreContext) => {
-        coreContext.modules.signals.signalAutoloadList.push('init');
+        coreContext.modules.signals.signalAutoloadList.push('preinit');
     })
 };
 

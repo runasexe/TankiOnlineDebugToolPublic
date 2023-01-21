@@ -2,6 +2,7 @@ const { connectContext, globalContext } = require('/src/utils/context');
 const { Module } = require('./moduleManager');
 const { moduleListenerName } = require('/config/moduleConnection');
 const { GlobalEvent, CoreEvent } = require('./event');
+const { sharedCore } = require('/src/utils/features');
 
 class ListenerRecvEvent extends CoreEvent {
     recv = null;
@@ -111,6 +112,12 @@ class ModuleListener extends EventTarget {
      * Остановка загрузчика модулей
      */
     listenStop() {}
+
+    callRecvObject(recvData) {
+        if(this.dispatchEvent(new ListenerRecvEvent(recvData, null))) {
+            this.onRecvDefault(recvData, null);
+        }
+    }
 
     onRecvDefault(data, recvPrevious) {
         if(!data) {
@@ -251,10 +258,28 @@ class ContextModuleListener extends ModuleListener {
     }
 }
 /**
+ * Объединенный файл, используются общие данные
+ */
+class SharedModuleListener extends ModuleListener {
+    constructor(coreContext) {
+        super(coreContext);
+    }
+    
+    listenStart(options) {
+        sharedCore.coreContext = this.coreContext;
+    }
+
+    installModuleTemplate(moduleTemplate) {
+        this.callRecvObject(moduleTemplate);
+    }
+}
+/**
  * Функция определения регистратора, возвращает проиниализированный регистратор
  */
 ModuleListener.getModuleListener = ((coreContext, listenerName) => {
-    if(connectContext instanceof EventTarget) {
+    if(sharedCore.enabled && (!sharedCore.coreContext)) {
+        return new SharedModuleListener(coreContext);
+    } else if(connectContext instanceof EventTarget) {
         return new EventModuleListener(coreContext, connectContext, listenerName);
     } else {
         return new ContextModuleListener(coreContext, connectContext, listenerName);
