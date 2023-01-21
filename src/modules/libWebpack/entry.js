@@ -6,7 +6,7 @@ module.exports = moduleCreate('libWebpack', ((moduleContext, coreContext) => {
     // moduleContext.info.versionAlpha = true;
     // moduleContext.info.versionBeta = false;
 
-    moduleContext.units.register(require('./units/WebpackModuleManager'));
-    moduleContext.units.register(require('./units/AdvancedWebpackModuleManager'));
+    moduleContext.units.register(require('./units/webpackModuleManager'));
+    moduleContext.units.register(require('./units/advancedWebpackModuleManager'));
 }));
 

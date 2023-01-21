@@ -8,6 +8,6 @@ module.exports = moduleCreate('tankionlineHooks', ((moduleContext, coreContext) 
     
     moduleContext.units.register(require('./units/hookManager'));
     moduleContext.units.register(require('./units/hooks/fastOpenContainerHook'));
-    moduleContext.units.register(require('./units/hooks/BattleMessagesHook'));
+    moduleContext.units.register(require('./units/hooks/battleMessagesHook'));
 }), defaultModuleCreateSignals);
 
