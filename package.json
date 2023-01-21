@@ -1,0 +1,28 @@
+{
+  "name": "tankionlinedebugtool",
+  "version": "1.0.0",
+  "description": "Debug tool for Tanki Online project",
+  "scripts": {
+    "build-development": "npx webpack build --config ./webpack-development.config.js --stats verbose",
+    "build-production": "npx webpack build --config ./webpack-production.config.js --stats verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/runasexe/TankiOnlineDebugTool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/runasexe/TankiOnlineDebugTool/issues"
+  },
+  "homepage": "https://github.com/runasexe/TankiOnlineDebugTool#readme",
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "terser-webpack-plugin": "^5.3.6"
+  }
+}
