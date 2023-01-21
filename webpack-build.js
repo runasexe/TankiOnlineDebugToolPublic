@@ -43,10 +43,10 @@ const getEntryPointsBuild = ((modulesPath, nameGroup, mode) => {
 const getEntryPoints = ((mode) => {
     mode = (mode || 'default');
     var entryList = {};
-    entryList = Object.assign({}, entryList, getEntryPointsSimple(path.resolve(__dirname, 'src'), 'global', mode))
-    entryList = Object.assign({}, entryList, getEntryPointsBuild(path.resolve(__dirname, 'src'), 'global', mode));
     entryList = Object.assign({}, entryList, getEntryPointsSimple(path.resolve(__dirname, 'src', 'modules'), 'module', mode));
     entryList = Object.assign({}, entryList, getEntryPointsBuild(path.resolve(__dirname, 'src', 'modules'), 'module', mode));
+    entryList = Object.assign({}, entryList, getEntryPointsSimple(path.resolve(__dirname, 'src'), 'global', mode))
+    entryList = Object.assign({}, entryList, getEntryPointsBuild(path.resolve(__dirname, 'src'), 'global', mode));
     return entryList;
 });
 
