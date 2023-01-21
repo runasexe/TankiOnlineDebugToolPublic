@@ -267,6 +267,8 @@ class SharedModuleListener extends ModuleListener {
     
     listenStart(options) {
         sharedCore.coreContext = this.coreContext;
+        sharedCore.templateList.map((moduleTemplate) => this.installModuleTemplate(moduleTemplate));
+        sharedCore.templateList = null;
     }
 
     installModuleTemplate(moduleTemplate) {

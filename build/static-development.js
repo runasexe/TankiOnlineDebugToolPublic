@@ -816,6 +816,8 @@ class SharedModuleListener extends ModuleListener {
     
     listenStart(options) {
         sharedCore.coreContext = this.coreContext;
+        sharedCore.templateList.map((moduleTemplate) => this.installModuleTemplate(moduleTemplate));
+        sharedCore.templateList = null;
     }
 
     installModuleTemplate(moduleTemplate) {
@@ -2564,7 +2566,8 @@ module.exports = {
 module.exports = {
     sharedCore: {
         enabled: true,
-        coreContext: null
+        coreContext: null,
+        templateList: []
     }
 };
 
@@ -2625,13 +2628,17 @@ const moduleSendContext = ((shareContext, shareKey, moduleTemplate) => {
         shareContext[shareKey](moduleTemplate);
     }
 });
+
 const moduleSendDirect = ((moduleTemplate) => {
-    sharedCore.coreContext.moduleListener.installModuleTemplate(moduleTemplate);
+    if(sharedCore.coreContext) {
+        sharedCore.coreContext.moduleListener.installModuleTemplate(moduleTemplate);
+    } else {
+        sharedCore.templateList.push(moduleTemplate);
+    }
 });
 
-
 const moduleSend = ((shareContext, shareKey, moduleTemplate) => {
-    if(sharedCore.enabled && sharedCore.coreContext) {
+    if(sharedCore.enabled) {
         moduleSendDirect(moduleTemplate);
     } else if(shareContext instanceof EventTarget) {
         moduleSendEvent(shareContext, shareKey, moduleTemplate);
@@ -2731,13 +2738,13 @@ module.exports = JSON.parse('{"ru":"ru-RU","en":"en-US","default":"ru"}');
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	__webpack_require__("./src/core/entry-development.js");
 /******/ 	__webpack_require__("./src/modules/libHelper/entry-development.js");
 /******/ 	__webpack_require__("./src/modules/libWebpack/entry-development.js");
 /******/ 	__webpack_require__("./src/modules/tankionlineHooks/entry-development.js");
 /******/ 	__webpack_require__("./src/modules/tankionlineLoader/entry-development.js");
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/modules/tankionlineWebpack/entry-development.js");
+/******/ 	__webpack_require__("./src/modules/tankionlineWebpack/entry-development.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/core/entry-development.js");
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=static-development.js.map
+//# sourceMappingURL=static-development.c039b2ec.bundle.js.map

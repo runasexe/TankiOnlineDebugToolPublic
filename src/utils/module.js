@@ -45,13 +45,17 @@ const moduleSendContext = ((shareContext, shareKey, moduleTemplate) => {
         shareContext[shareKey](moduleTemplate);
     }
 });
+
 const moduleSendDirect = ((moduleTemplate) => {
-    sharedCore.coreContext.moduleListener.installModuleTemplate(moduleTemplate);
+    if(sharedCore.coreContext) {
+        sharedCore.coreContext.moduleListener.installModuleTemplate(moduleTemplate);
+    } else {
+        sharedCore.templateList.push(moduleTemplate);
+    }
 });
 
-
 const moduleSend = ((shareContext, shareKey, moduleTemplate) => {
-    if(sharedCore.enabled && sharedCore.coreContext) {
+    if(sharedCore.enabled) {
         moduleSendDirect(moduleTemplate);
     } else if(shareContext instanceof EventTarget) {
         moduleSendEvent(shareContext, shareKey, moduleTemplate);
