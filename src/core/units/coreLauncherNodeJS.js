@@ -6,7 +6,7 @@ const { consoleContext } = require('/src/utils/context');
 
 const unitSignals = {
     applicationNodeJS: ((coreContext) => {
-        consoleContext.error("Can't actions to run in NodeJS");
+        coreContext.logger.error("Can't actions to run in NodeJS");
     })
 };
 

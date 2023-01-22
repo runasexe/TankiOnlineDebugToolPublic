@@ -183,7 +183,7 @@ const unitSignals = {
         coreContext.units.destroy();
     }),
     applicationUnknown: ((coreContext) => {
-        consoleContext.error("Can't actions to run: Unknown interpreter");
+        coreContext.logger.error("Can't actions to run: Unknown interpreter");
     })
 };
 
@@ -267,7 +267,7 @@ const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/cont
 
 const unitSignals = {
     applicationNodeJS: ((coreContext) => {
-        consoleContext.error("Can't actions to run in NodeJS");
+        coreContext.logger.error("Can't actions to run in NodeJS");
     })
 };
 
@@ -1839,7 +1839,7 @@ module.exports = moduleCreate('tankionlineHooks', ((moduleContext, coreContext) 
     // moduleContext.info.versionBeta = false;
     
     moduleContext.units.register(__webpack_require__(/*! ./units/hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/hooks/fastOpenContainerHook */ "./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js"));
+    // moduleContext.units.register(require('./units/hooks/fastOpenContainerHook'));
     moduleContext.units.register(__webpack_require__(/*! ./units/hooks/battleMessagesHook */ "./src/modules/tankionlineHooks/units/hooks/battleMessagesHook.js"));
 }), defaultModuleCreateSignals);
 
@@ -2000,37 +2000,6 @@ const unitSignals = {
                             
                     }));
                 }
-            })
-        };
-    })
-};
-
-module.exports = {
-    unitSignals
-};
-
-
-
-/***/ }),
-
-/***/ "./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js":
-/*!***************************************************************************!*\
-  !*** ./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js ***!
-  \***************************************************************************/
-/***/ ((module) => {
-
-const unitSignals = {
-    load:((moduleContext, coreContext) => {
-		moduleContext.hooks['FastOpenContainerHook'] = {
-            enabled: true,
-            callback: ((webpackData, hookInfo) => {
-                const AnimationOpenContainerComponent = webpackData.getExports('tanks.clients.html5.lobby.containers.AnimationOpenContainerComponent', true);
-                hookInfo.onContainerAccelerateCalc = ((...args) => {
-                    return 1;
-                });
-                AnimationOpenContainerComponent.prototype.accelerate_0 = ((...args) => {
-                    return hookInfo.onContainerAccelerateCalc.apply(null, args);
-                });
             })
         };
     })
@@ -2747,4 +2716,4 @@ module.exports = JSON.parse('{"ru":"ru-RU","en":"en-US","default":"ru"}');
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=static-development.c039b2ec.bundle.js.map
+//# sourceMappingURL=static-development.js.map

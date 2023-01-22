@@ -11,7 +11,7 @@ const unitSignals = {
         coreContext.units.destroy();
     }),
     applicationUnknown: ((coreContext) => {
-        consoleContext.error("Can't actions to run: Unknown interpreter");
+        coreContext.logger.error("Can't actions to run: Unknown interpreter");
     })
 };
 
