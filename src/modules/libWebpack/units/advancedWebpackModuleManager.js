@@ -1,9 +1,12 @@
-const { WebpackModuleManager } = require('./webpackModuleManager');
+class AdvancedWebpackModuleManager {
+    moduleManager = null;
 
-class AdvancedWebpackModuleManager extends WebpackModuleManager {
+    constructor() {
+        this.moduleManager = null;
+    }
     getExports(searchData, resultOnce) {
         const className = searchData.split('.').pop();
-        this.webpackRequireList(this.searchMetadataClass(className));
+        this.moduleManager.webpackRequireList(this.searchMetadataClass(className));
         const searchResult = this.searchExports(searchData, resultOnce);
         if(resultOnce) {
             return searchResult;
@@ -24,8 +27,8 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
     }
     searchSource(searchCode, resultOnce) {
         const availableModules = [];
-        for (const moduleId in this.modules) {
-            if (this.modules[moduleId].toString().indexOf(searchCode) != (-1)) {
+        for (const moduleId in this.moduleManager.modules) {
+            if (this.moduleManager.modules[moduleId].toString().indexOf(searchCode) != (-1)) {
                 availableModules.push(moduleId);
             }
         }
@@ -36,8 +39,8 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
     }
     searchSourceRegEx(searchCodeRegEx, resultOnce) {
         const availableModules = [];
-        for (const moduleId in this.modules) {
-            if (searchCodeRegEx.test(this.modules[moduleId].toString())) {
+        for (const moduleId in this.moduleManager.modules) {
+            if (searchCodeRegEx.test(this.moduleManager.modules[moduleId].toString())) {
                 availableModules.push(moduleId);
             }
         }
@@ -54,17 +57,17 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
         const searchDataRuntime = Array.from(searchData);
         let searchValue = null;
 
-        for (const moduleId in this.installedModules) {
-            if (this.installedModules[moduleId].exports === null) {
+        for (const moduleId in this.moduleManager.installedModules) {
+            if (this.moduleManager.installedModules[moduleId].exports === null) {
                 continue;
             }
             if (
-                typeof this.installedModules[moduleId].exports != "object" &&
-                typeof this.installedModules[moduleId].exports != "function"
+                typeof this.moduleManager.installedModules[moduleId].exports != "object" &&
+                typeof this.moduleManager.installedModules[moduleId].exports != "function"
             ) {
                 continue;
             }
-            availableModules[moduleId] = this.installedModules[moduleId].exports;
+            availableModules[moduleId] = this.moduleManager.installedModules[moduleId].exports;
         }
         while ((searchValue = searchDataRuntime.shift())) {
             const availableModulesNext = {};
@@ -89,8 +92,16 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
             for (const moduleId in availableModules) {
                 return availableModules[moduleId];
             }
+            return null;
         }
         return availableModules;
+    }
+
+    loadEntryModule(...args) {
+        return this.moduleManager.loadEntryModule(...args);
+    }
+    webpackRequireList(...args) {
+        return this.moduleManager.webpackRequireList(...args);
     }
 }
 

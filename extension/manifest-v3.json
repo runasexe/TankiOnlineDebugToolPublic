@@ -1,0 +1,44 @@
+{
+    "manifest_version": 3,
+    "name": "__MSG_extName__",
+    "description": "__MSG_extDesc__",
+    "version": "1.0.1",
+    "minimum_chrome_version": "96",
+    "default_locale": "ru",
+    "icons": {
+        "152": "./resources/images/152x152.png",
+        "128": "./resources/images/128x128.png",
+        "64": "./resources/images/64x64.png",
+        "48": "./resources/images/48x48.png",
+        "32": "./resources/images/32x32.png",
+        "16": "./resources/images/16x16.png"
+    },
+    "background": {
+        "service_worker": "./dist/serviceWorker.js"
+    },
+    "devtools_page": "./dist/devtools/devtools.html",
+    "permissions": [
+        "background",
+        "activeTab",
+        "contextMenus",
+        "tabs",
+        "scripting",
+        "declarativeNetRequest",
+        "declarativeNetRequestFeedback"
+    ],
+    "host_permissions": [
+        "https://tankionline.com/*",
+        "http://tankionline.com/*",
+        "https://*.tankionline.com/*",
+        "http://*.tankionline.com/*"
+    ],
+    "sandbox": {
+        "pages": [
+            "./dist/sandbox/unsafe-eval.html"
+        ]
+    },
+    "content_security_policy": {
+        "extension_page": "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'inline-speculation-rules' '*'; object-src 'self'",
+        "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'inline-speculation-rules' '*'; child-src 'self'"
+    }
+}

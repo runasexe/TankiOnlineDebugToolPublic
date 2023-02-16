@@ -31,7 +31,7 @@ const getEntryPointsBuild = ((modulesPath, nameGroup, mode) => {
         .map(info => (info.build = (info.content['build_' + mode] || info.content.build), info))
         .filter(info => info.build)
         .map(info => (
-            info.build().map(record => (
+            info.build(mode).map(record => (
                 entriesInfo[nameGroup + '-' + info.name + '-' + record.name] = record.entries
                     .map(file => path.resolve(path.dirname(info.file), file))
                     .filter(file => existsSync(file))
@@ -40,14 +40,8 @@ const getEntryPointsBuild = ((modulesPath, nameGroup, mode) => {
     return entriesInfo;
 });
 
-const getEntryPoints = ((mode) => {
-    mode = (mode || 'default');
-    var entryList = {};
-    entryList = Object.assign({}, entryList, getEntryPointsSimple(path.resolve(__dirname, 'src', 'modules'), 'module', mode));
-    entryList = Object.assign({}, entryList, getEntryPointsBuild(path.resolve(__dirname, 'src', 'modules'), 'module', mode));
-    entryList = Object.assign({}, entryList, getEntryPointsSimple(path.resolve(__dirname, 'src'), 'global', mode))
-    entryList = Object.assign({}, entryList, getEntryPointsBuild(path.resolve(__dirname, 'src'), 'global', mode));
-    return entryList;
-});
+module.exports = {
+    getEntryPointsSimple,
+    getEntryPointsBuild
+};
 
-module.exports = { getEntryPoints };

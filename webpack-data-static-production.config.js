@@ -1,21 +1,25 @@
 const path = require('path');
 const TerserPlugin = require("terser-webpack-plugin");
-const { getEntryPoints } = require('./webpack-build-static');
+
 
 const buildMode = 'production';
-const buildId = 'static-' + buildMode;
+const buildIndex = 'static';
+const buildType = 'data';
+
+const { getEntryPoints } = require('./webpack-build-' + buildType + '-' + buildIndex);
+
 const configBuild = [];
-const configData = getEntryPoints(buildMode);
+const configData = getEntryPoints(__dirname, buildMode);
 
 configBuild.push({
-    name: buildId,
+    name: buildMode + '-' + buildType + '-' + buildIndex,
     mode: buildMode,
     entry: configData,
     devtool: 'source-map',
     //stats: 'verbose',
     output: {
-        filename: buildId + '.[contenthash].bundle.js',
-        path: path.resolve(__dirname, 'dist', buildId),
+        filename: buildMode + '-' + buildType + '-' + buildIndex + '.[contenthash].bundle.js',
+        path: path.resolve(__dirname, 'dist', buildMode, buildType, buildIndex),
         hashDigestLength: 8,
         // globalObject: 'window',
     },

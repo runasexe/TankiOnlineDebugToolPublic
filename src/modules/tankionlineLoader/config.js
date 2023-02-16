@@ -14,10 +14,21 @@ const mutatePage = ((linkGamePage, linkCurrent) => {
 });
 
 const getGameInfo = (() => {
-    return {
+    const gameInfo = {
         linkGamePage: baseGamePage,
         linkReferer: baseGamePage
+    };
+    
+    let baseURL = new URL(domContext.location.href);
+
+    if(/^(?:.+\.)?tankionline\.com$/.test(baseURL.host)) {
+        if(/^\/(?:play|browser-(?:public|private))\//.test(baseURL.pathname)) {
+            gameInfo.linkGamePage = baseURL.toString();
+            gameInfo.linkReferer = baseURL.toString();
+        }
     }
+
+    return gameInfo;
 });
 
 module.exports = {

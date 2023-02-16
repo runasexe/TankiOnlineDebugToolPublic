@@ -1,27 +1,31 @@
 const path = require('path');
 
-const { getEntryPoints } = require('./webpack-build');
+
 
 const buildMode = 'development';
-const buildId = buildMode;
+const buildType = 'extension';
+
+
+const { getEntryPoints } = require('./webpack-build-' + buildType);
+
 const configBuild = [];
-const configData = getEntryPoints(buildId);
+const configData = getEntryPoints(__dirname, buildMode);
 
 for (const configKey in configData) {
     configBuild.push({
-        name: buildId + '-' + configKey,
-        mode: buildId,
+        name: buildMode + '-' + buildType,
+        mode: buildMode,
         entry: configData[configKey],
         devtool: 'source-map',
         //stats: 'verbose',
         output: {
-            filename: configKey + '.[contenthash].bundle.js',
-            path: path.resolve(__dirname, 'dist', buildId),
+            filename: configKey + '.js',
+            path: path.resolve(__dirname, 'dist', buildMode, buildType),
             hashDigestLength: 8,
             // globalObject: 'window',
         }
     });
-}
+};
 
 module.exports = configBuild;
 

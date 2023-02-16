@@ -161,6 +161,19 @@ class ModuleListener extends EventTarget {
     onRecvDataDefault(data, recvPrevious) {
 
     }
+    
+    /**
+     * Функция определения регистратора, возвращает проиниализированный регистратор
+     */
+    static getModuleListener(coreContext, listenerName) {
+        if(sharedCore.enabled && (!sharedCore.coreContext)) {
+            return new SharedModuleListener(coreContext);
+        } else if(connectContext instanceof EventTarget) {
+            return new EventModuleListener(coreContext, connectContext, listenerName);
+        } else {
+            return new ContextModuleListener(coreContext, connectContext, listenerName);
+        }
+    }
 };
 /**
  * Регистратор модулей на основе событий.
@@ -275,18 +288,6 @@ class SharedModuleListener extends ModuleListener {
         this.callRecvObject(moduleTemplate);
     }
 }
-/**
- * Функция определения регистратора, возвращает проиниализированный регистратор
- */
-ModuleListener.getModuleListener = ((coreContext, listenerName) => {
-    if(sharedCore.enabled && (!sharedCore.coreContext)) {
-        return new SharedModuleListener(coreContext);
-    } else if(connectContext instanceof EventTarget) {
-        return new EventModuleListener(coreContext, connectContext, listenerName);
-    } else {
-        return new ContextModuleListener(coreContext, connectContext, listenerName);
-    }
-});
 
 const unitSignals = {
     // Инициализация компонента взаимодействия с модулями

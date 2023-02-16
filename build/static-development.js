@@ -9,8 +9,8 @@
 
 module.exports = {
     debugName: 'tankiOnlineDebug',
-    styleLoggerProject: 'color: blue;',
-    styleLoggerModule: 'color: green;'
+    styleLoggerProject: 'color: rgb(242, 171, 38);',
+    styleLoggerModule: 'color: rgb(21, 128, 0);'
 };
 
 
@@ -710,6 +710,19 @@ class ModuleListener extends EventTarget {
     onRecvDataDefault(data, recvPrevious) {
 
     }
+    
+    /**
+     * Функция определения регистратора, возвращает проиниализированный регистратор
+     */
+    static getModuleListener(coreContext, listenerName) {
+        if(sharedCore.enabled && (!sharedCore.coreContext)) {
+            return new SharedModuleListener(coreContext);
+        } else if(connectContext instanceof EventTarget) {
+            return new EventModuleListener(coreContext, connectContext, listenerName);
+        } else {
+            return new ContextModuleListener(coreContext, connectContext, listenerName);
+        }
+    }
 };
 /**
  * Регистратор модулей на основе событий.
@@ -824,18 +837,6 @@ class SharedModuleListener extends ModuleListener {
         this.callRecvObject(moduleTemplate);
     }
 }
-/**
- * Функция определения регистратора, возвращает проиниализированный регистратор
- */
-ModuleListener.getModuleListener = ((coreContext, listenerName) => {
-    if(sharedCore.enabled && (!sharedCore.coreContext)) {
-        return new SharedModuleListener(coreContext);
-    } else if(connectContext instanceof EventTarget) {
-        return new EventModuleListener(coreContext, connectContext, listenerName);
-    } else {
-        return new ContextModuleListener(coreContext, connectContext, listenerName);
-    }
-});
 
 const unitSignals = {
     // Инициализация компонента взаимодействия с модулями
@@ -1552,14 +1553,17 @@ module.exports = moduleCreate('libWebpack', ((moduleContext, coreContext) => {
 /*!**********************************************************************!*\
   !*** ./src/modules/libWebpack/units/advancedWebpackModuleManager.js ***!
   \**********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module) => {
 
-const { WebpackModuleManager } = __webpack_require__(/*! ./webpackModuleManager */ "./src/modules/libWebpack/units/webpackModuleManager.js");
+class AdvancedWebpackModuleManager {
+    moduleManager = null;
 
-class AdvancedWebpackModuleManager extends WebpackModuleManager {
+    constructor() {
+        this.moduleManager = null;
+    }
     getExports(searchData, resultOnce) {
         const className = searchData.split('.').pop();
-        this.webpackRequireList(this.searchMetadataClass(className));
+        this.moduleManager.webpackRequireList(this.searchMetadataClass(className));
         const searchResult = this.searchExports(searchData, resultOnce);
         if(resultOnce) {
             return searchResult;
@@ -1580,8 +1584,8 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
     }
     searchSource(searchCode, resultOnce) {
         const availableModules = [];
-        for (const moduleId in this.modules) {
-            if (this.modules[moduleId].toString().indexOf(searchCode) != (-1)) {
+        for (const moduleId in this.moduleManager.modules) {
+            if (this.moduleManager.modules[moduleId].toString().indexOf(searchCode) != (-1)) {
                 availableModules.push(moduleId);
             }
         }
@@ -1592,8 +1596,8 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
     }
     searchSourceRegEx(searchCodeRegEx, resultOnce) {
         const availableModules = [];
-        for (const moduleId in this.modules) {
-            if (searchCodeRegEx.test(this.modules[moduleId].toString())) {
+        for (const moduleId in this.moduleManager.modules) {
+            if (searchCodeRegEx.test(this.moduleManager.modules[moduleId].toString())) {
                 availableModules.push(moduleId);
             }
         }
@@ -1610,17 +1614,17 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
         const searchDataRuntime = Array.from(searchData);
         let searchValue = null;
 
-        for (const moduleId in this.installedModules) {
-            if (this.installedModules[moduleId].exports === null) {
+        for (const moduleId in this.moduleManager.installedModules) {
+            if (this.moduleManager.installedModules[moduleId].exports === null) {
                 continue;
             }
             if (
-                typeof this.installedModules[moduleId].exports != "object" &&
-                typeof this.installedModules[moduleId].exports != "function"
+                typeof this.moduleManager.installedModules[moduleId].exports != "object" &&
+                typeof this.moduleManager.installedModules[moduleId].exports != "function"
             ) {
                 continue;
             }
-            availableModules[moduleId] = this.installedModules[moduleId].exports;
+            availableModules[moduleId] = this.moduleManager.installedModules[moduleId].exports;
         }
         while ((searchValue = searchDataRuntime.shift())) {
             const availableModulesNext = {};
@@ -1645,8 +1649,16 @@ class AdvancedWebpackModuleManager extends WebpackModuleManager {
             for (const moduleId in availableModules) {
                 return availableModules[moduleId];
             }
+            return null;
         }
         return availableModules;
+    }
+
+    loadEntryModule(...args) {
+        return this.moduleManager.loadEntryModule(...args);
+    }
+    webpackRequireList(...args) {
+        return this.moduleManager.webpackRequireList(...args);
     }
 }
 
@@ -1674,62 +1686,72 @@ class WebpackModuleManager {
     constructor(modules) {
         this.modules = (modules || {});
         this.installedModules = [];
+    }
+};
 
-        const __nested_webpack_require_244__ = (function (moduleId) {
+/**
+ * Мненджер webpack-модулей ES4
+ */
+class ES4WebpackModuleManager extends WebpackModuleManager {
+    constructor(modules) {
+        super(modules);
+
+        const __nested_webpack_require_415__ = (function (moduleId) {
             if (this.installedModules[moduleId]) {
                 return this.installedModules[moduleId].exports;
             }
             let module = this.installedModules[moduleId] = {
-                i: moduleId,
-                l: false,
+                id: moduleId,
+                loaded: false,
                 exports: {}
             };
-            this.modules[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_244__);
-            module.l = true;
+            this.modules[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_415__);
+            module.loaded = true;
             return module.exports;
         }).bind(this);
-        __nested_webpack_require_244__.m = this.modules;
-        __nested_webpack_require_244__.c = this.installedModules;
 
-        this.harmonyExport = this.export = __nested_webpack_require_244__.d = (function (exports, name, getter) {
-            if (!__nested_webpack_require_244__.o(exports, name)) {
+        __nested_webpack_require_415__.m = this.modules;
+        __nested_webpack_require_415__.c = this.installedModules;
+
+        this.harmonyExport = this.export = __nested_webpack_require_415__.d = (function (exports, name, getter) {
+            if (!__nested_webpack_require_415__.o(exports, name)) {
                 Object.defineProperty(exports, name, { enumerable: true, get: getter });
             }
         });
 
-        __nested_webpack_require_244__.r = (function (exports) {
+        __nested_webpack_require_415__.r = (function (exports) {
             if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
                 Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
             }
             Object.defineProperty(exports, '__esModule', { value: true });
         });
 
-        __nested_webpack_require_244__.t = (function (value, mode) {
-            if (mode & 1) value = __nested_webpack_require_244__(value);
+        __nested_webpack_require_415__.t = (function (value, mode) {
+            if (mode & 1) value = __nested_webpack_require_415__(value);
             if (mode & 8) return value;
             if ((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
             let ns = Object.create(null);
-            __nested_webpack_require_244__.r(ns);
+            __nested_webpack_require_415__.r(ns);
             Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-            if (mode & 2 && typeof value != 'string') for (let key in value) __nested_webpack_require_244__.d(ns, key, function (key) { return value[key]; }.bind(null, key));
+            if (mode & 2 && typeof value != 'string') for (let key in value) __nested_webpack_require_415__.d(ns, key, function (key) { return value[key]; }.bind(null, key));
             return ns;
         });
 
-        this.getDefaultExport = __nested_webpack_require_244__.n = (function (module) {
+        this.getDefaultExport = __nested_webpack_require_415__.n = (function (module) {
             let getter = module && module.__esModule ?
                 function getDefault() { return module['default']; } :
                 function getModuleExports() { return module; };
-            __nested_webpack_require_244__.d(getter, 'a', getter);
+            __nested_webpack_require_415__.d(getter, 'a', getter);
             return getter;
         });
-        __nested_webpack_require_244__.o = (function (object, property) {
+        __nested_webpack_require_415__.o = (function (object, property) {
             return Object.prototype.hasOwnProperty.call(object, property);
         });
-        __nested_webpack_require_244__.p = "";
-        __nested_webpack_require_244__.s = null;
-        this.webpackRequire = this.__webpack_require__ = __nested_webpack_require_244__;
+        __nested_webpack_require_415__.p = "";
+        __nested_webpack_require_415__.s = null;
+        this.webpackRequire = this.__webpack_require__ = __nested_webpack_require_415__;
     }
-    
+
     installModule(id, callback, init) {
         this.modules[id] = callback;
         if (init) {
@@ -1778,21 +1800,177 @@ class WebpackModuleManager {
     }
 
     loadEntryModule(entry) {
-        if(entry) {
+        if (entry) {
             this.__webpack_require__.s = entry;
         }
-        this.webpackRequire(this.__webpack_require__.s);
+        if (this.__webpack_require__.s instanceof Array) {
+            this.__webpack_require__.s.forEach((e) => {
+                this.webpackRequire(e);
+            });
+        } else {
+            this.webpackRequire(this.__webpack_require__.s);
+        }
     }
 
     webpackRequireList(moduleIdList) {
         let result = {};
-        moduleIdList.map((e) => {result[e] = this.__webpack_require__(e)});
+        moduleIdList.map((e) => { result[e] = this.__webpack_require__(e) });
+        return result;
+    }
+};
+
+
+/**
+ * Мненджер webpack-модулей ES5
+ */
+class ES5WebpackModuleManager extends WebpackModuleManager {
+    entries = null;
+
+    constructor(modules) {
+        super(modules);
+        this.entries = []
+
+        const __nested_webpack_require_4788__ = ((moduleId) => {
+            if (typeof (this.installedModules[moduleId]) != 'undefined') {
+                return this.installedModules[moduleId].exports;
+            }
+            const module = this.installedModules[moduleId] = {
+                id: moduleId,
+                loaded: false,
+                exports: {}
+            };
+            this.modules[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_4788__);
+            module.loaded = true;
+            return module.exports;
+        }).bind(this);
+        __nested_webpack_require_4788__.n = ((t) => {
+            let n = (t && t.__esModule) ? (() => t.default) : (() => t);
+            __nested_webpack_require_4788__.d(n, { a: n });
+            return n;
+        });
+        __nested_webpack_require_4788__.d = (t, n) => {
+            for (const r in n) {
+                if (!__nested_webpack_require_4788__.o(n, r)) {
+                    continue;
+                }
+                if (__nested_webpack_require_4788__.o(t, r)) {
+                    continue;
+                }
+                Object.defineProperty(t, r, {
+                    enumerable: true,
+                    get: n[r]
+                });
+            }
+        };
+        __nested_webpack_require_4788__.g = ((function () {
+            if ("object" == typeof (globalThis)) {
+                return globalThis;
+            }
+            try {
+                return (this || new Function("return this")());
+            } catch (t) {
+                if ("object" == typeof (window)) {
+                    return window;
+                }
+            }
+        })());
+        __nested_webpack_require_4788__.hmd = ((t) => {
+            (t = Object.create(t)).children || (t.children = []);
+            Object.defineProperty(t, "exports", {
+                enumerable: true,
+                set: (() => {
+                    throw new Error("ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: " + t.id)
+                })
+            });
+            return t;
+        });
+        __nested_webpack_require_4788__.o = ((t, n) => Object.prototype.hasOwnProperty.call(t, n));
+        __nested_webpack_require_4788__.r = ((t) => {
+            if (typeof (Symbol) != "undefined" && Symbol.toStringTag) {
+                Object.defineProperty(t, Symbol.toStringTag, {
+                    value: "Module"
+                });
+            };
+            Object.defineProperty(t, "__esModule", {
+                value: true
+            });
+        });
+
+        this.webpackRequire = this.__webpack_require__ = __nested_webpack_require_4788__;
+    }
+
+    installModule(id, callback, init) {
+        this.modules[id] = callback;
+        if (init) {
+            return this.webpackRequire(id);
+        }
+    }
+
+    get __webpack_public_path__() {
+        return this.__webpack_require__.p;
+    }
+
+    set __webpack_public_path__(value) {
+        this.__webpack_require__.p = value;
+    }
+
+    get publicPath() {
+        return this.__webpack_require__.p;
+    }
+
+    set publicPath(value) {
+        this.__webpack_require__.p = value;
+    }
+
+    get __webpack_entry__() {
+        return this.entries;
+    }
+
+    set __webpack_entry__(value) {
+        this.entries = value;
+    }
+
+    get entry() {
+        return this.entries;
+    }
+
+    set entry(value) {
+        this.entries = value;
+    }
+
+    get entryModule() {
+        return this.entries;
+    }
+
+    set entryModule(value) {
+        this.entries = value;
+    }
+
+    loadEntryModule(entries) {
+        this.entries = entries || this.entries || [];
+        if (!(this.entries instanceof Array)) {
+            this.entries = [this.entries];
+        }
+        this.entries.forEach((e) => {
+            this.webpackRequire(e);
+        });
+    }
+
+    webpackRequireList(moduleIdList) {
+        let result = {};
+        moduleIdList.map((e) => { result[e] = this.__webpack_require__(e) });
         return result;
     }
 };
 
 module.exports = {
-    WebpackModuleManager
+    WebpackModuleManager,
+    ES4WebpackModuleManager,
+    ES5WebpackModuleManager,
+    moduleCompareTable: {
+        'es4': ES4WebpackModuleManager,
+        'es5': ES5WebpackModuleManager
+    }
 };
 
 
@@ -1839,8 +2017,8 @@ module.exports = moduleCreate('tankionlineHooks', ((moduleContext, coreContext) 
     // moduleContext.info.versionBeta = false;
     
     moduleContext.units.register(__webpack_require__(/*! ./units/hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js"));
-    // moduleContext.units.register(require('./units/hooks/fastOpenContainerHook'));
     moduleContext.units.register(__webpack_require__(/*! ./units/hooks/battleMessagesHook */ "./src/modules/tankionlineHooks/units/hooks/battleMessagesHook.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/hooks/fastOpenContainerHook */ "./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js"));
 }), defaultModuleCreateSignals);
 
 
@@ -1853,25 +2031,108 @@ module.exports = moduleCreate('tankionlineHooks', ((moduleContext, coreContext) 
   \***********************************************************/
 /***/ ((module) => {
 
+class TankiOnlineHook {
+    id = null;
+    params = null;
+    isSupportEnabled = null;
+    isEnabled = null;
+    isInjected = null;
+    webpackData = null;
+    coreContext = null;
+    moduleContext = null;
+
+    constructor(id, options) {
+        this.id = id;
+        this.isSupportEnabled = false;
+        this.isEnabled = true;
+        this.isInjected = false;
+        this.webpackData = null;
+        this.coreContext = null;
+        this.moduleContext = null;
+        if ((typeof (options) != 'object') || (options === null)) {
+            options = {};
+        }
+        Object.assign(this.params = {}, options);
+    }
+    enable() {
+        if(!this.isSupportEnabled) {
+            return;
+        }
+        if (this.isEnabled) {
+            return;
+        }
+        if(this.isInjected) {
+            this.processEnable();
+        }
+        this.isEnabled = true;
+    }
+    disable() {
+        if(!this.isSupportEnabled) {
+            return;
+        }
+        if (!this.isEnabled) {
+            return;
+        }
+        if(this.isInjected) {
+            this.processDisable();
+        }
+        this.isEnabled = false;
+    }
+    inject(webpackData) {
+        this.webpackData = webpackData;
+        this.processInject();
+        this.isInjected = true;
+    }
+    processInject() {
+        /* Вызов при регистрации хука */
+    }
+    processEnable() {
+        /* Вызов при включении хука */
+    }
+    processDisable() {
+        /* Вызов при выключении хука */
+    }
+};
+class TankiOnlineHookManager {
+    hooks = null;
+    coreContext = null;
+
+    constructor(coreContext) {
+        this.hooks = {};
+        this.coreContext = coreContext;
+    }
+
+    register(hook, moduleContext) {
+        if(hook.id in this.hooks) {
+            return;
+        }
+        this.hooks[hook.id] = hook;
+        hook.coreContext = this.coreContext;
+        hook.moduleContext = moduleContext;
+    }
+
+    launch(webpackData) {
+        for(const hookId in this.hooks) {
+            this.hooks[hookId].inject(webpackData);
+        }
+    }
+};
+
 const unitSignals = {
-    init:((moduleContext, coreContext) => {
-		moduleContext.hooks = [];
+    init: ((moduleContext, coreContext) => {
+        moduleContext.hooks = new TankiOnlineHookManager(coreContext);
     }),
     event: ((moduleContext, coreContext) => {
-		coreContext.event.addEventListener("tankionlineLoader.entry.launch", ((event) => {
-            const webpackData = coreContext.modules.require('tankionlineWebpack').webpackData;
-            for (const hookName in moduleContext.hooks) {
-                const hookInfo = moduleContext.hooks[hookName];
-                if(hookInfo && hookInfo.enabled && hookInfo.callback) {
-                    hookInfo.callback(webpackData, hookInfo)
-                }
-            }
+        coreContext.event.addEventListener("tankionlineLoader.entry.launch", ((event) => {
+            moduleContext.hooks.launch(coreContext.modules.require('tankionlineWebpack').webpackData);
         }));
     })
 };
 
 module.exports = {
-    unitSignals
+    unitSignals,
+    TankiOnlineHook,
+    TankiOnlineHookManager
 };
 
 
@@ -1882,131 +2143,244 @@ module.exports = {
 /*!************************************************************************!*\
   !*** ./src/modules/tankionlineHooks/units/hooks/battleMessagesHook.js ***!
   \************************************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js");
+
+class TankiOnlineHookBattleMessages extends TankiOnlineHook {
+    constructor(defaultEnabled) {
+        super('BattleMessages');
+
+        this.isSupportEnabled = true;
+        this.isEnabled = defaultEnabled;
+    }
+    processInject() {
+        const hookInfo = this;
+
+        const libHelper = hookInfo.coreContext.modules.require("libHelper");
+
+        const getExportObject = ((objectPath, ...args) => {
+            const exportData = this.webpackData.getExports(objectPath, ...args);
+            if((typeof(exportData) == 'undefined') || (exportData === null)) {
+                hookInfo.moduleContext.logger.error("Can't get object: \"%s\"", objectPath);
+            }
+            return exportData;
+        })
+
+        const CaptureFlagComponent = getExportObject('tanks.client.battle.objects.modes.ctf.component.CaptureFlagComponent', true);
+        if(!CaptureFlagComponent) { return; }
+
+        const BattleTeam = getExportObject('projects.tanks.multiplatform.battleservice.model.battle.team.BattleTeam', true);
+        if(!BattleTeam) { return; }
+
+        const TeamRelation = getExportObject('tanks.client.lobby.redux.battle.hud.TeamRelation', true);
+        if(!TeamRelation) { return; }
+
+        const BattleMessageType = getExportObject('tanks.client.lobby.redux.battle.hud.BattleMessageType', true);
+        if(!BattleMessageType) { return; }
+
+        const BattleMessagesComponent = getExportObject('tanks.client.battle.hud.BattleMessagesComponent', true);
+        if(!BattleMessagesComponent) { return; }
+
+        const LocalizedComponent = getExportObject('com.alternativaplatform.redux.react.LocalizedComponent', true);
+        if(!LocalizedComponent) { return; }
+
+        /**
+         * Сообщения для событий
+         */
+        const eventData = hookInfo.params.notifyMessages = {
+            notifyFlagDropped: {
+                playerMessage: new libHelper.FormatString("%0 потерял флаг"),
+                defaultMessage: new libHelper.FormatString("Флаг потерян") // TODO: Такое бывает?
+            },
+            notifyFlagReturned: {
+                playerMessage: new libHelper.FormatString("%0 возвратил флаг"),
+                defaultMessage: new libHelper.FormatString("Флаг возвращен")
+            }
+        };
+
+        // Патч локализации
+        const getLocalizedKeyByBattleMessage = BattleMessagesComponent.prototype.getLocalizedKeyByBattleMessage_0;
+        BattleMessagesComponent.prototype.getLocalizedKeyByBattleMessage_0 = (function (battleMessage, ...args) {
+            if (battleMessage instanceof libHelper.FormatString) {
+                return battleMessage;
+            }
+            return getLocalizedKeyByBattleMessage.call(this, battleMessage, ...args);
+        });
+
+        // Патч локализации
+        const getTextPropertyNameList = libHelper.ObjectHelper.getPropertyName(LocalizedComponent.prototype, 'getText_');
+        getTextPropertyNameList.map((propertyName) => {
+            let originalFunciton = LocalizedComponent.prototype[propertyName];
+            LocalizedComponent.prototype[propertyName] = (function (...args) {
+                if ((!args.length) || !(args[0] instanceof libHelper.FormatString)) {
+                    return originalFunciton.apply(this, args);
+                }
+                return (args[0]).formatValue(args.slice(1));
+            });
+        });
+
+        // Изучение сообщений
+        libHelper.FunctionHelper.pathFunctionSimpleBefore(
+            CaptureFlagComponent.prototype,
+            libHelper.ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, 'notifyFlagFacedOff', true),
+            (function (...args) {
+                hookInfo.moduleContext.logger.info("CaptureFlagComponent.prototype.notifyFlagFacedOff(%O, %O)", this, args);
+            })
+        );
+
+        // Изучение сообщений
+        libHelper.FunctionHelper.pathFunctionSimpleBefore(
+            CaptureFlagComponent.prototype,
+            libHelper.ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, 'notifyFlagExiled', true),
+            (function (...args) {
+                hookInfo.moduleContext.logger.info("CaptureFlagComponent.prototype.notifyFlagExiled(%O, %O)", this, args);
+            })
+        );
+
+        // Изучение сообщений
+        libHelper.FunctionHelper.pathFunctionSimpleBefore(
+            CaptureFlagComponent.prototype,
+            libHelper.ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, 'notifyReadyToFaceOff', true),
+            (function (...args) {
+                hookInfo.moduleContext.logger.info("CaptureFlagComponent.prototype.notifyReadyToFaceOff(%O, %O)", this, args);
+            })
+        );
+
+        const getTypePropertyName = libHelper.ObjectHelper.getPropertyName(BattleMessageType.Companion.__proto__, 'getType', true);
+        for (const eventName in eventData) {
+            libHelper.FunctionHelper.pathFunctionSimpleBefore(
+                CaptureFlagComponent.prototype,
+                libHelper.ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, eventName, true),
+                (function (flagObject, battleEntityObject) {
+                    if (!hookInfo.isEnabled) {
+                        return;
+                    }
+                    hookInfo.moduleContext.logger.info("CaptureFlagComponent.prototype." + eventName + "(flagOwner: %O, playerTeam: %O)", this, flagObject.teamType.name, this.gameMode_0.possesedTankTeam.name);
+                    function teamCompare(teamFirst, teamSecond) {
+                        return ((teamFirst === teamSecond) && (teamFirst !== BattleTeam.NONE));
+                    }
+                    function getTeamRelationEx(teamFirst, teamSecond, isAlly) {
+                        return ((isAlly == teamCompare(teamFirst, teamSecond)) ? TeamRelation.ALLY : TeamRelation.ENEMY);
+                    }
+                    function getTeamRelation(gameMode, flagTeamOwner, isAlly) {
+                        if (gameMode && gameMode.possesedTankTeam) {
+                            return getTeamRelationEx(gameMode.possesedTankTeam, flagTeamOwner, isAlly)
+                        }
+                        return null;
+                    }
+                    const teamRelation = getTeamRelation(this.gameMode_0, flagObject.teamType, false);
+                    if (battleEntityObject) {
+                        this.addBattleLogMessage_0(
+                            eventData[eventName].playerMessage,
+                            battleEntityObject, (
+                            (teamRelation !== null)
+                                ? BattleMessageType.Companion[getTypePropertyName].call(BattleMessageType.Companion, teamRelation, false)
+                                : BattleMessageType.WHITE
+                        )
+                        );
+                    } else {
+                        this.addBattleLogMessage_1(
+                            eventData[eventName].defaultMessage, (
+                            (teamRelation !== null)
+                                ? BattleMessageType.Companion[getTypePropertyName].call(BattleMessageType.Companion, teamRelation, false)
+                                : BattleMessageType.WHITE
+                        )
+                        );
+                    }
+
+                })
+            );
+        }
+    }
+}
 
 const unitSignals = {
-    load:((moduleContext, coreContext) => {
-		moduleContext.hooks['BattleMessagesHook'] = {
-            enabled: true,
-            callback: ((webpackData, hookInfo) => {
-                const FormatString = coreContext.modules.require("libHelper").FormatString;
-                const FunctionHelper = coreContext.modules.require("libHelper").FunctionHelper;
-                const ObjectHelper = coreContext.modules.require("libHelper").ObjectHelper;
-            
-                // Патч отсутствующих сообщений в бою
-                const eventData = {
-                    notifyFlagDropped: {
-                        playerMessage: new FormatString("%0 потерял флаг"),
-                        defaultMessage: new FormatString("Флаг потерян") // TODO: Такое бывает?
-                    },
-                    notifyFlagReturned: {
-                        playerMessage: new FormatString("%0 возвратил флаг"),
-                        defaultMessage: new FormatString("Флаг возвращен")
-                    }
-                };
-            
-                const CaptureFlagComponent = webpackData.getExports('tanks.client.battle.objects.modes.ctf.component.CaptureFlagComponent', true);
-                const BattleTeam = webpackData.getExports('projects.tanks.multiplatform.battleservice.model.battle.team.BattleTeam', true);
-                const TeamRelation = webpackData.getExports('tanks.client.lobby.redux.battle.hud.TeamRelation', true);
-                const BattleMessageType = webpackData.getExports('tanks.client.lobby.redux.battle.hud.BattleMessageType', true);
-                const BattleMessagesComponent = webpackData.getExports('tanks.client.battle.hud.BattleMessagesComponent', true);
-                const LocalizedComponent = webpackData.getExports('com.alternativaplatform.redux.react.LocalizedComponent', true);
-                
-                // Патч локализации
-                const getLocalizedKeyByBattleMessage = BattleMessagesComponent.prototype.getLocalizedKeyByBattleMessage_0;
-                BattleMessagesComponent.prototype.getLocalizedKeyByBattleMessage_0 = (function(battleMessage, ...args) {
-                    if(battleMessage instanceof FormatString) {
-                        return battleMessage;
-                    }
-                    return getLocalizedKeyByBattleMessage.call(this, battleMessage, ...args);
-                });
-                
-                // Патч локализации
-                const getTextPropertyNameList = ObjectHelper.getPropertyName(LocalizedComponent.prototype, 'getText_');
-                getTextPropertyNameList.map((propertyName) => {
-                    let originalFunciton = LocalizedComponent.prototype[propertyName];
-                    LocalizedComponent.prototype[propertyName] = (function(...args) {
-                        if((!args.length) || !(args[0] instanceof FormatString)) {
-                            return originalFunciton.apply(this, args);
-                        }
-                        return (args[0]).formatValue(args.slice(1));
-                    });
-                });
-            
-                /*
-                // Изучение сообщений
-                ObjectHelper.pathFunctionSimpleBefore(
-                    CaptureFlagComponent.prototype,
-                    ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, 'notifyFlagFacedOff', true),
-                    (function (...args) {
-                        moduleContext.logger.info("CaptureFlagComponent.prototype.notifyFlagFacedOff(%O, %O)", this, args);
-                }));
-            
-                // Изучение сообщений
-                ObjectHelper.pathFunctionSimpleBefore(
-                    CaptureFlagComponent.prototype,
-                    ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, 'notifyFlagExiled', true),
-                    (function (...args) {
-                        moduleContext.logger.info("CaptureFlagComponent.prototype.notifyFlagExiled(%O, %O)", this, args);
-                }));
-            
-                // Изучение сообщений
-                ObjectHelper.pathFunctionSimpleBefore(
-                    CaptureFlagComponent.prototype,
-                    ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, 'notifyReadyToFaceOff', true),
-                    (function (...args) {
-                        moduleContext.logger.info("CaptureFlagComponent.prototype.notifyReadyToFaceOff(%O, %O)", this, args);
-                }));
-                */
-            
-                const getTypePropertyName = ObjectHelper.getPropertyName(BattleMessageType.Companion.__proto__, 'getType', true);
-                for(const eventName in eventData) {
-                    FunctionHelper.pathFunctionSimpleBefore(
-                        CaptureFlagComponent.prototype,
-                        ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, eventName, true),
-                        (function (flagObject, battleEntityObject) {
-                            // moduleContext.logger.info("CaptureFlagComponent.prototype." + eventName + "(flagOwner: %O, playerTeam: %O)", this, flagObject.teamType.name, this.gameMode_0.possesedTankTeam.name);
-                            function teamCompare(teamFirst, teamSecond) {
-                                return ((teamFirst === teamSecond) && (teamFirst !== BattleTeam.NONE));
-                            }
-                            function getTeamRelationEx(teamFirst, teamSecond, isAlly) {
-                                return ((isAlly == teamCompare(teamFirst, teamSecond)) ? TeamRelation.ALLY : TeamRelation.ENEMY);
-                            }
-                            function getTeamRelation(gameMode, flagTeamOwner, isAlly) {
-                                if(gameMode && gameMode.possesedTankTeam) {
-                                    return getTeamRelationEx(gameMode.possesedTankTeam, flagTeamOwner, isAlly)
-                                }
-                                return null;
-                            }
-                            const teamRelation = getTeamRelation(this.gameMode_0, flagObject.teamType, false);
-                            if(battleEntityObject) {
-                                this.addBattleLogMessage_0(
-                                    eventData[eventName].playerMessage,
-                                    battleEntityObject, (
-                                        (teamRelation !== null)
-                                        ? BattleMessageType.Companion[getTypePropertyName].call(BattleMessageType.Companion, teamRelation, false)
-                                        : BattleMessageType.WHITE
-                                    )
-                                );
-                            } else {
-                                this.addBattleLogMessage_1(
-                                    eventData[eventName].defaultMessage, (
-                                        (teamRelation !== null)
-                                        ? BattleMessageType.Companion[getTypePropertyName].call(BattleMessageType.Companion, teamRelation, false)
-                                        : BattleMessageType.WHITE
-                                    )
-                                );
-                            }
-                            
-                    }));
-                }
-            })
-        };
+    load: ((moduleContext, coreContext) => {
+        const defaultEnabled = true;
+
+        moduleContext.hooks.register(new TankiOnlineHookBattleMessages(defaultEnabled), moduleContext);
     })
 };
 
 module.exports = {
-    unitSignals
+    unitSignals,
+    TankiOnlineHookBattleMessages
+};
+
+
+
+/***/ }),
+
+/***/ "./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js":
+/*!***************************************************************************!*\
+  !*** ./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js ***!
+  \***************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js");
+
+class TankiOnlineHookFastOpenContainer extends TankiOnlineHook {
+    constructor(defaultEnabled) {
+        super('FastOpenContainer');
+
+        this.isSupportEnabled = true;
+        this.isEnabled = defaultEnabled;
+    }
+    processInject() {
+        const hookInfo = this;
+
+        const getExportObject = ((objectPath, ...args) => {
+            const exportData = this.webpackData.getExports(objectPath, ...args);
+            if((typeof(exportData) == 'undefined') || (exportData === null)) {
+                hookInfo.moduleContext.logger.error("Can't get object: \"%s\"", objectPath);
+            }
+            return exportData;
+        })
+
+        const AnimationOpenContainerComponent = getExportObject('tanks.clients.html5.lobby.containers.AnimationOpenContainerComponent', true);
+
+        if(!AnimationOpenContainerComponent) { return; }
+
+        /**
+         * Переменная скорости открытия контейнеров
+         */
+        hookInfo.params.openContainerSpeed = 1;
+        /**
+         * Функция открытия контейнера, вызывается при включенном хуке
+         */
+        hookInfo.params.functionAcceleratePath = (function (...args) {
+            return hookInfo.params.openContainerSpeed;
+        });
+        /**
+         * Оригинальная функция открытия контейнера
+         */
+        hookInfo.params.functionAccelerateDefault = AnimationOpenContainerComponent.prototype.accelerate_0;
+
+        /**
+         * В зависимости от состояния патча, вызывается либо оригинальная функция, либо патченная
+         */
+        AnimationOpenContainerComponent.prototype.accelerate_0 = (function (...args) {
+            if(hookInfo.isEnabled) {
+                return hookInfo.params.functionAcceleratePath.apply(this, args);
+            } else {
+                return hookInfo.params.functionAccelerateDefault.apply(this, args);
+            }
+        });
+    }
+}
+
+const unitSignals = {
+    load: ((moduleContext, coreContext) => {
+        const defaultEnabled = false;
+
+		moduleContext.hooks.register(new TankiOnlineHookFastOpenContainer(defaultEnabled), moduleContext);
+    })
+};
+
+module.exports = {
+    unitSignals,
+    TankiOnlineHookFastOpenContainer
 };
 
 
@@ -2035,10 +2409,21 @@ const mutatePage = ((linkGamePage, linkCurrent) => {
 });
 
 const getGameInfo = (() => {
-    return {
+    const gameInfo = {
         linkGamePage: baseGamePage,
         linkReferer: baseGamePage
+    };
+    
+    let baseURL = new URL(domContext.location.href);
+
+    if(/^(?:.+\.)?tankionline\.com$/.test(baseURL.host)) {
+        if(/^\/(?:play|browser-(?:public|private))\//.test(baseURL.pathname)) {
+            gameInfo.linkGamePage = baseURL.toString();
+            gameInfo.linkReferer = baseURL.toString();
+        }
     }
+
+    return gameInfo;
 });
 
 module.exports = {
@@ -2116,41 +2501,43 @@ const unitSignals = {
         moduleContext.libHelper = null;
 
         moduleContext.webpackData = null;
-		moduleContext.webpackSource = null;
+        moduleContext.webpackSource = null;
     }),
     moduleLoad: (async (moduleContext, coreContext) => {
         moduleContext.libHelper = coreContext.modules.require('libHelper');
         let libTankionlineWebpack = coreContext.modules.require('tankionlineWebpack');
 
         moduleContext.webpackData = libTankionlineWebpack.webpackData;
-		moduleContext.webpackSource = libTankionlineWebpack.webpackSource;
-        
+        moduleContext.webpackSource = libTankionlineWebpack.webpackSource;
+
         await moduleContext.ScriptLoader.getMainScriptContentAuto(moduleContext.webpackSource, moduleContext.libHelper);
     }),
     moduleApplication: ((moduleContext, coreContext) => {
-        if(!moduleContext.webpackSource.mainScriptWebpackElements || !moduleContext.webpackSource.mainScriptWebpackPath || !moduleContext.webpackSource.mainScriptWebpackEntry) {
+        const libWebpack = coreContext.modules.require('libWebpack');
+
+        if (!moduleContext.webpackSource.mainScriptWebpackElements || !moduleContext.webpackSource.mainScriptWebpackPath || !moduleContext.webpackSource.mainScriptWebpackEntry) {
             moduleContext.logger.error('Fail: webpackSource is corrupted: %O', moduleContext.webpackSource);
             return;
         }
         const document = getDocument();
-        if(getPageContentRewriteStatus() && moduleContext.webpackSource.pageContent) {
-            if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "htmlRewrite.fullDocument", {cancelable: true}))) {
+        if (getPageContentRewriteStatus() && moduleContext.webpackSource.pageContent) {
+            if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "htmlRewrite.fullDocument", { cancelable: true }))) {
                 document.firstChild.innerHTML = moduleContext.webpackSource.pageContent;
             }
         }
-        if(getBaseRewriteStatus() && moduleContext.webpackSource.linkBase) { 
-            if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "htmlRewrite.headBase", {cancelable: true}))) {
+        if (getBaseRewriteStatus() && moduleContext.webpackSource.linkBase) {
+            if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "htmlRewrite.headBase", { cancelable: true }))) {
                 Array.from(document.getElementsByTagName('base')).map((element) => element.remove());
                 let headElement = document.head;
-                if(!headElement) {
+                if (!headElement) {
                     let headList = document.getElementsByTagName('head');
-                    if(headList.length) {
+                    if (headList.length) {
                         headElement = headList[0];
                     } else {
                         moduleContext.logger.warn('DOM base element load error: document.head');
                     }
                 }
-                if(headElement) {
+                if (headElement) {
                     let insertElement = document.createElement('base');
                     insertElement.setAttribute('href', moduleContext.webpackSource.linkBase);
                     headElement.insertBefore(insertElement, (headElement.firstChild || null));
@@ -2158,27 +2545,33 @@ const unitSignals = {
             }
         }
 
-        if(coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "dataLoad", {cancelable: true}))) {
-            moduleContext.webpackData.modules = eval(moduleContext.webpackSource.mainScriptWebpackElements);
-            moduleContext.webpackData.publicPath = moduleContext.webpackSource.mainScriptWebpackPath;
-            moduleContext.webpackData.entryModule = moduleContext.webpackSource.mainScriptWebpackEntry;
+        if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "dataLoad", { cancelable: true }))) {
+            if (moduleContext.webpackSource.mainScriptWebpackModuleManager) {
+                moduleContext.webpackData.moduleManager = new (libWebpack.moduleCompareTable[moduleContext.webpackSource.mainScriptWebpackModuleManager])();
+            }
+            moduleContext.webpackData.moduleManager.modules = eval('(()=>(' + moduleContext.webpackSource.mainScriptWebpackElements + '))()');
+            moduleContext.webpackData.moduleManager.publicPath = moduleContext.webpackSource.mainScriptWebpackPath;
+            moduleContext.webpackData.moduleManager.entryModule = moduleContext.webpackSource.mainScriptWebpackEntry;
         }
 
-        if(moduleContext.webpackData.modules) {
-            const entryModule = moduleContext.webpackData.entryModule;
+        if (moduleContext.webpackData.moduleManager.modules) {
+            coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "dataLoaded", {
+                cancelable: false, detail: {
+                    webpackData: moduleContext.webpackData
+                }
+            }));
 
-            coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "dataLoaded", {cancelable: false, detail: {
-                webpackData: moduleContext.webpackData
-            }}));
-
-            if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "entry.launch", {cancelable: true, detail: {
-                webpackData: moduleContext.webpackData
-            }}))) {
-                const result = moduleContext.webpackData.loadEntryModule();
-                coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "entry.launched", {cancelable: false, detail: {
-                    returnValue: result,
-                    isOriginalModule: (entryModule == moduleContext.webpackData.entryModule)
-                }}));
+            if (coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "entry.launch", {
+                cancelable: true, detail: {
+                    webpackData: moduleContext.webpackData
+                }
+            }))) {
+                const result = moduleContext.webpackData.moduleManager.loadEntryModule();
+                coreContext.event.dispatchEvent(new coreContext.ModuleEvent(moduleContext, "entry.launched", {
+                    cancelable: false, detail: {
+                        returnValue: result
+                    }
+                }));
             }
         }
     })
@@ -2215,7 +2608,7 @@ class NetworkUtils {
             return null;
         }
         let pageContent = await response.text();
-        if(!pageContent) {
+        if (!pageContent) {
             return null;
         }
         return pageContent;
@@ -2234,22 +2627,33 @@ class GameInfoCollector {
 
     getGamePage() {
         const forceGamePage = this.libHelper.LinkHelper.getQueryVariable(paramOriginalPage);
-        if(forceGamePage) {
+        if (forceGamePage) {
             return forceGamePage;
         }
-        if(this.linkGamePage) {
+        if (this.linkGamePage) {
             return mutatePage(this.linkGamePage, domContext.location.href);
         }
         return null;
     }
-
+    processGameScript(script) {
+        if (!script) {
+            return null;
+        }
+        const scriptURL = new URL(script);
+        if (/\.js$/.test(scriptURL.pathname)) {
+            if (!scriptURL.search.length) {
+                scriptURL.search = '?';
+            }
+        }
+        return scriptURL.toString();
+    }
     getGameScript(gameScript) {
         const forceGameScript = this.libHelper.LinkHelper.getQueryVariable(paramOriginalScript);
-        if(forceGameScript) {
-            return forceGameScript;
+        if (forceGameScript) {
+            return this.processGameScript(forceGameScript);
         }
-        if(gameScript) {
-            return mutateScript(gameScript, this.getGamePage(), domContext.location.href);
+        if (gameScript) {
+            return this.processGameScript(mutateScript(gameScript, this.getGamePage(), domContext.location.href));
         }
         return null;
     }
@@ -2261,7 +2665,7 @@ class GameInfoCollector {
 class ParamGameInfoCollector extends GameInfoCollector {
     getGameInfo() {
         const originalScript = this.getGameScript();
-        if(!originalScript) {
+        if (!originalScript) {
             return null;
         }
         return {
@@ -2288,11 +2692,11 @@ class DocumentGameInfoCollector extends GameInfoCollector {
 class SourceGameInfoCollector extends GameInfoCollector {
     async getGameInfo() {
         const pageContent = await NetworkUtils.getContent(this.getGamePage(), this.linkReferer);
-        if(!pageContent) {
+        if (!pageContent) {
             return;
         }
         const contentQuery = /<script[^>]+src="([^">]+main.[0-9a-f]{8}.js)"[^>]*><\/script>/i.exec(pageContent);
-        if(!contentQuery) {
+        if (!contentQuery) {
             return null;
         }
         return {
@@ -2304,46 +2708,85 @@ class SourceGameInfoCollector extends GameInfoCollector {
 };
 class ScriptLoader {
     static parseMainScript(scriptContent) {
-        if(!scriptContent) {
+        if (!scriptContent) {
             return null;
         }
-        let scriptContentPosition = scriptContent.indexOf("}([function(t,e,n){") + 2;
-        let sourceData = {
-            mainScriptWebpackElements: scriptContent.substring(scriptContentPosition, scriptContent.lastIndexOf("]") + 1),
-            mainScriptWebpackPath: null,
-            mainScriptWebpackEntry: null
+        const searchOptions = [
+            ((scriptContent) => {
+                const webpackInfo = /}\((\[function\(t,e,n\){.*\])[^\]]+/.exec(scriptContent);
+                if(!webpackInfo) {
+                    return null;
+                }
+                const searchPublic = /,n\.p="(.*)",n\(n\.s=(\d+)\)/.exec(scriptContent);
+                if (!searchPublic) {
+                    return null;
+                }
+                return {
+                    mainScriptWebpackElements: webpackInfo[1],
+                    mainScriptWebpackPath: searchPublic[1],
+                    mainScriptWebpackEntry: [parseInt(searchPublic[2])],
+                    mainScriptWebpackModuleManager: 'es4'
+                };
+            }), ((scriptContent) => {
+                const webpackInfo = /\(this,\(\(\)=>\(\(\)=>{var[ \t]+[^=]{1,4}=({.*}),n={};function[ \t]+i\(r\)/.exec(scriptContent);
+                if(!webpackInfo) {
+                    return null;
+                }
+                const searchPublic = /,i.p="(.*)"((?:,i\(\d+\))+)/.exec(scriptContent);
+                if (!searchPublic) {
+                    return null;
+                }
+                const webpackEntries = [];
+                let searchEntry = null;
+                const searchEntries = /i\((\d+)\)/g;
+                while (searchEntry = searchEntries.exec(searchPublic[2])) {
+                    webpackEntries.push(parseInt(searchEntry[1]));
+                }
+                return {
+                    mainScriptWebpackElements: webpackInfo[1],
+                    mainScriptWebpackPath: searchPublic[1],
+                    mainScriptWebpackEntry: webpackEntries,
+                    mainScriptWebpackModuleManager: 'es5'
+                };
+            })
+        ];
+        for(let index = 0; index < searchOptions.length; index++) {
+            const sourceData = searchOptions[index](scriptContent);
+            if(sourceData) {
+                return sourceData;
+            }
         }
-        scriptContent = scriptContent.substring(0, scriptContentPosition);
-        sourceData.mainScriptWebpackPath = scriptContent.substring(scriptContent.lastIndexOf(',n.p="') + 6, scriptContent.lastIndexOf('",n(n.s='));
-        sourceData.mainScriptWebpackEntry = parseInt(scriptContent.substring(scriptContent.lastIndexOf('",n(n.s=') + 8,scriptContent.lastIndexOf(")")));
-        return sourceData;
+        return null;
     }
     static async getMainScriptContentAuto(webpackSource, libHelper) {
         const { linkGamePage, linkReferer } = getGameInfo();
         const methodsAvailable = [
+            // Сначала ищем информацию на странице
+            new DocumentGameInfoCollector(libHelper, linkGamePage, linkReferer),
+            // Затем пытаемся извлечь из параметров
             new ParamGameInfoCollector(libHelper, linkGamePage, linkReferer),
-            // new DocumentGameInfoCollector(libHelper, linkGamePage, linkReferer),
+            // Потом получаем их из значений по умолчанию
             new SourceGameInfoCollector(libHelper, linkGamePage, linkReferer)
         ];
         let methodResult;
         let scriptInfo = null;
 
-        for(let methodId = 0; methodId < methodsAvailable.length; methodId++) {
+        for (let methodId = 0; methodId < methodsAvailable.length; methodId++) {
             methodResult = methodsAvailable[methodId].getGameInfo();
-            if(methodResult instanceof Promise) {
+            if (methodResult instanceof Promise) {
                 methodResult = await methodResult;
             }
-            if(!methodResult || !methodResult.linkScript || methodResult.scriptLoaded) {
+            if (!methodResult || !methodResult.linkScript || methodResult.scriptLoaded) {
                 continue;
             }
             scriptInfo = methodResult;
             break;
         }
-        if(!scriptInfo) {
+        if (!scriptInfo) {
             return;
         }
         const scriptData = ScriptLoader.parseMainScript(await NetworkUtils.getContent(scriptInfo.linkScript, linkReferer));
-        if(scriptData) {
+        if (scriptData) {
             Object.assign(scriptInfo, scriptData);
         }
         Object.assign(webpackSource, scriptInfo);

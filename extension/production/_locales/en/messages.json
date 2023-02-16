@@ -1,0 +1,11 @@
+{
+    "extName": {
+       "description": "Browser extension name which is visible in Web Stores",
+       "message": "TankiOnline development & debug extension"
+    },
+    "extDesc": {
+       "description": "Browser extension description visible in Web Stores",
+       "message": "Utility for debugging the TankiOnline resource"
+    }
+ }
+ 
