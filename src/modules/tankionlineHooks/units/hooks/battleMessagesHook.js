@@ -41,16 +41,7 @@ class TankiOnlineHookBattleMessages extends TankiOnlineHook {
         /**
          * Сообщения для событий
          */
-        const eventData = hookInfo.params.notifyMessages = {
-            notifyFlagDropped: {
-                playerMessage: new libHelper.FormatString("%0 потерял флаг"),
-                defaultMessage: new libHelper.FormatString("Флаг потерян") // TODO: Такое бывает?
-            },
-            notifyFlagReturned: {
-                playerMessage: new libHelper.FormatString("%0 возвратил флаг"),
-                defaultMessage: new libHelper.FormatString("Флаг возвращен")
-            }
-        };
+        const getEventData = (() => (hookInfo.params.notifyMessages));
 
         // Патч локализации
         const getLocalizedKeyByBattleMessage = BattleMessagesComponent.prototype.getLocalizedKeyByBattleMessage_0;
@@ -101,7 +92,7 @@ class TankiOnlineHookBattleMessages extends TankiOnlineHook {
         );
 
         const getTypePropertyName = libHelper.ObjectHelper.getPropertyName(BattleMessageType.Companion.__proto__, 'getType', true);
-        for (const eventName in eventData) {
+        for (const eventName in getEventData()) {
             libHelper.FunctionHelper.pathFunctionSimpleBefore(
                 CaptureFlagComponent.prototype,
                 libHelper.ObjectHelper.getPropertyName(CaptureFlagComponent.prototype, eventName, true),
@@ -125,7 +116,7 @@ class TankiOnlineHookBattleMessages extends TankiOnlineHook {
                     const teamRelation = getTeamRelation(this.gameMode_0, flagObject.teamType, false);
                     if (battleEntityObject) {
                         this.addBattleLogMessage_0(
-                            eventData[eventName].playerMessage,
+                            getEventData()[eventName].playerMessage,
                             battleEntityObject, (
                             (teamRelation !== null)
                                 ? BattleMessageType.Companion[getTypePropertyName].call(BattleMessageType.Companion, teamRelation, false)
@@ -134,7 +125,7 @@ class TankiOnlineHookBattleMessages extends TankiOnlineHook {
                         );
                     } else {
                         this.addBattleLogMessage_1(
-                            eventData[eventName].defaultMessage, (
+                            getEventData()[eventName].defaultMessage, (
                             (teamRelation !== null)
                                 ? BattleMessageType.Companion[getTypePropertyName].call(BattleMessageType.Companion, teamRelation, false)
                                 : BattleMessageType.WHITE
@@ -152,7 +143,18 @@ const unitSignals = {
     load: ((moduleContext, coreContext) => {
         const defaultEnabled = true;
 
-        moduleContext.hooks.register(new TankiOnlineHookBattleMessages(defaultEnabled), moduleContext);
+        moduleContext.hooks.register(new TankiOnlineHookBattleMessages(defaultEnabled, {
+            notifyMessages: {
+                notifyFlagDropped: {
+                    playerMessage: new libHelper.FormatString("%0 потерял флаг"),
+                    defaultMessage: new libHelper.FormatString("Флаг потерян") // TODO: Такое бывает?
+                },
+                notifyFlagReturned: {
+                    playerMessage: new libHelper.FormatString("%0 возвратил флаг"),
+                    defaultMessage: new libHelper.FormatString("Флаг возвращен")
+                }
+            }
+        }), moduleContext);
     })
 };
 

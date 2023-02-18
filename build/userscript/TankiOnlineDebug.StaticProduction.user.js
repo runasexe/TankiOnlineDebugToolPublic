@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           TankiOnlineDebug.StaticProduction
 // @namespace      TankiOnlineDebug
-// @version        1.2.1
+// @version        1.2.2
 // @description    Debug tool for TankiOnline. Exists features: extended battle notifications
 // @description:ru Утилита для отладки игры "Танки Онлайн". Возможности: расширенные уведомления игры
 // @author         runasexe
