@@ -1,8 +1,8 @@
 const { TankiOnlineHook } = require('./../hookManager');
 
 class TankiOnlineHookBattleMessages extends TankiOnlineHook {
-    constructor(defaultEnabled) {
-        super('BattleMessages');
+    constructor(defaultEnabled, options) {
+        super('BattleMessages', options);
 
         this.isSupportEnabled = true;
         this.isEnabled = defaultEnabled;
@@ -142,6 +142,8 @@ class TankiOnlineHookBattleMessages extends TankiOnlineHook {
 const unitSignals = {
     load: ((moduleContext, coreContext) => {
         const defaultEnabled = true;
+
+        const libHelper = coreContext.modules.require("libHelper");
 
         moduleContext.hooks.register(new TankiOnlineHookBattleMessages(defaultEnabled, {
             notifyMessages: {

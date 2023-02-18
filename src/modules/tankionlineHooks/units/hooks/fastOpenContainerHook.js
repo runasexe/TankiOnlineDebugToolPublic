@@ -1,8 +1,8 @@
 const { TankiOnlineHook } = require('./../hookManager');
 
 class TankiOnlineHookFastOpenContainer extends TankiOnlineHook {
-    constructor(defaultEnabled) {
-        super('FastOpenContainer');
+    constructor(defaultEnabled, options) {
+        super('FastOpenContainer', options);
 
         this.isSupportEnabled = true;
         this.isEnabled = defaultEnabled;

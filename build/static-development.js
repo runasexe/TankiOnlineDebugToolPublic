@@ -2148,8 +2148,8 @@ module.exports = {
 const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js");
 
 class TankiOnlineHookBattleMessages extends TankiOnlineHook {
-    constructor(defaultEnabled) {
-        super('BattleMessages');
+    constructor(defaultEnabled, options) {
+        super('BattleMessages', options);
 
         this.isSupportEnabled = true;
         this.isEnabled = defaultEnabled;
@@ -2290,6 +2290,8 @@ const unitSignals = {
     load: ((moduleContext, coreContext) => {
         const defaultEnabled = true;
 
+        const libHelper = coreContext.modules.require("libHelper");
+
         moduleContext.hooks.register(new TankiOnlineHookBattleMessages(defaultEnabled, {
             notifyMessages: {
                 notifyFlagDropped: {
@@ -2323,8 +2325,8 @@ module.exports = {
 const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js");
 
 class TankiOnlineHookFastOpenContainer extends TankiOnlineHook {
-    constructor(defaultEnabled) {
-        super('FastOpenContainer');
+    constructor(defaultEnabled, options) {
+        super('FastOpenContainer', options);
 
         this.isSupportEnabled = true;
         this.isEnabled = defaultEnabled;
