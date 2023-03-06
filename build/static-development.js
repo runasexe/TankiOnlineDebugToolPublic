@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./config/debug.js":
-/*!*************************!*\
-  !*** ./config/debug.js ***!
-  \*************************/
+/***/ "TankiOnlineDebugTool\\config\\debug.js":
+/*!*********************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\config\debug.js ***!
+  \*********************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -17,10 +17,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./config/moduleConnection.js":
-/*!************************************!*\
-  !*** ./config/moduleConnection.js ***!
-  \************************************/
+/***/ "TankiOnlineDebugTool\\config\\moduleConnection.js":
+/*!********************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\config\moduleConnection.js ***!
+  \********************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -31,10 +31,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./config/project.js":
-/*!***************************!*\
-  !*** ./config/project.js ***!
-  \***************************/
+/***/ "TankiOnlineDebugTool\\config\\project.js":
+/*!***********************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\config\project.js ***!
+  \***********************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -45,16 +45,16 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/core/coreUtils.js":
-/*!*******************************!*\
-  !*** ./src/core/coreUtils.js ***!
-  \*******************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\coreUtils.js":
+/*!***************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\coreUtils.js ***!
+  \***************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
  * В этот файл вынесены инструменты сборки ядра
  */
-const { Module } = __webpack_require__(/*! ./units/moduleManager */ "./src/core/units/moduleManager.js");
+const { Module } = __webpack_require__(/*! ./units/moduleManager */ "TankiOnlineDebugTool\\src\\core\\units\\moduleManager.js");
 
 /**
  * Функция создания содуля ядра
@@ -96,15 +96,15 @@ module.exports = { moduleCreateCore };
 
 /***/ }),
 
-/***/ "./src/core/entry-development.js":
-/*!***************************************!*\
-  !*** ./src/core/entry-development.js ***!
-  \***************************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\entry-development.js":
+/*!***********************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\entry-development.js ***!
+  \***********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const moduleContext = __webpack_require__(/*! ./entry */ "./src/core/entry.js");
-const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
+const moduleContext = __webpack_require__(/*! ./entry */ "TankiOnlineDebugTool\\src\\core\\entry.js");
+const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
 
 moduleContext.info.versionDevelopment = true;
 forceDebugContext[debugName] = (forceDebugContext[debugName] || {});
@@ -119,10 +119,10 @@ module.exports = moduleContext;
 
 /***/ }),
 
-/***/ "./src/core/entry.js":
-/*!***************************!*\
-  !*** ./src/core/entry.js ***!
-  \***************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\entry.js":
+/*!***********************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\entry.js ***!
+  \***********************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
@@ -130,8 +130,8 @@ module.exports = moduleContext;
  */
 
 // Основные процедуры вынесены в отдельный файл "./coreUtils"
-const { moduleCreateCore } = __webpack_require__(/*! ./coreUtils */ "./src/core/coreUtils.js");
-const { defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "./src/utils/module.js")
+const { moduleCreateCore } = __webpack_require__(/*! ./coreUtils */ "TankiOnlineDebugTool\\src\\core\\coreUtils.js");
+const { defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "TankiOnlineDebugTool\\src\\utils\\module.js")
 
 // Сборка модуля ядра
 module.exports = moduleCreateCore(((coreContext) => {
@@ -143,31 +143,31 @@ module.exports = moduleCreateCore(((coreContext) => {
 
     // Импорт компонентов ядра:
     // > Подсистема отладки:
-    coreContext.units.register(__webpack_require__(/*! ./units/logger */ "./src/core/units/logger.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/logger */ "TankiOnlineDebugTool\\src\\core\\units\\logger.js"));
     // > Подсистема обработки событий:
-    coreContext.units.register(__webpack_require__(/*! ./units/event */ "./src/core/units/event.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/event */ "TankiOnlineDebugTool\\src\\core\\units\\event.js"));
     // > Подсистема менеджмента модулей:
-    coreContext.units.register(__webpack_require__(/*! ./units/moduleManager */ "./src/core/units/moduleManager.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/moduleManager */ "TankiOnlineDebugTool\\src\\core\\units\\moduleManager.js"));
     // > Подсистема регистрации модулей:
-    coreContext.units.register(__webpack_require__(/*! ./units/moduleListener */ "./src/core/units/moduleListener.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/moduleListener */ "TankiOnlineDebugTool\\src\\core\\units\\moduleListener.js"));
     // > Подсистема локализации:
-    coreContext.units.register(__webpack_require__(/*! ./units/i18n */ "./src/core/units/i18n.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/i18n */ "TankiOnlineDebugTool\\src\\core\\units\\i18n.js"));
     // > Лаунчер ядра:
-    coreContext.units.register(__webpack_require__(/*! ./units/coreLauncher */ "./src/core/units/coreLauncher.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/coreLauncher */ "TankiOnlineDebugTool\\src\\core\\units\\coreLauncher.js"));
     // > Лаунчер ядра для браузера:
-    coreContext.units.register(__webpack_require__(/*! ./units/coreLauncherBrowser */ "./src/core/units/coreLauncherBrowser.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/coreLauncherBrowser */ "TankiOnlineDebugTool\\src\\core\\units\\coreLauncherBrowser.js"));
     // > Лаунчер ядра для браузера:
-    coreContext.units.register(__webpack_require__(/*! ./units/coreLauncherNodeJS */ "./src/core/units/coreLauncherNodeJS.js"));
+    coreContext.units.register(__webpack_require__(/*! ./units/coreLauncherNodeJS */ "TankiOnlineDebugTool\\src\\core\\units\\coreLauncherNodeJS.js"));
 }), defaultModuleCreateSignals);
 
 
 
 /***/ }),
 
-/***/ "./src/core/units/coreLauncher.js":
-/*!****************************************!*\
-  !*** ./src/core/units/coreLauncher.js ***!
-  \****************************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\coreLauncher.js":
+/*!************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\coreLauncher.js ***!
+  \************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
@@ -175,7 +175,7 @@ module.exports = moduleCreateCore(((coreContext) => {
  * В зависимости от вида интерпретатора нвызывает функцию запуска ядл этого интерпетатора
  */
 
-const { getInterpreterType } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { getInterpreterType } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 const unitSignals = {
     application: ((coreContext) => {
@@ -193,18 +193,18 @@ module.exports = { unitSignals };
 
 /***/ }),
 
-/***/ "./src/core/units/coreLauncherBrowser.js":
-/*!***********************************************!*\
-  !*** ./src/core/units/coreLauncherBrowser.js ***!
-  \***********************************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\coreLauncherBrowser.js":
+/*!*******************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\coreLauncherBrowser.js ***!
+  \*******************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
  * Этот модуль содержит процедуру запуска для браузера.
  */
 
-const { globalContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { CoreEvent } = __webpack_require__(/*! ./event */ "./src/core/units/event.js");
+const { globalContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { CoreEvent } = __webpack_require__(/*! ./event */ "TankiOnlineDebugTool\\src\\core\\units\\event.js");
 
 // Событие при остановке прослушивания модулей
 class ModuleListenerStopEvent extends CoreEvent {
@@ -253,17 +253,17 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/core/units/coreLauncherNodeJS.js":
-/*!**********************************************!*\
-  !*** ./src/core/units/coreLauncherNodeJS.js ***!
-  \**********************************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\coreLauncherNodeJS.js":
+/*!******************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\coreLauncherNodeJS.js ***!
+  \******************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
  * Этот модуль содержит процедуру запуска для NodeJS.
  */
 
-const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 const unitSignals = {
     applicationNodeJS: ((coreContext) => {
@@ -277,17 +277,17 @@ module.exports = { unitSignals };
 
 /***/ }),
 
-/***/ "./src/core/units/event.js":
-/*!*********************************!*\
-  !*** ./src/core/units/event.js ***!
-  \*********************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\event.js":
+/*!*****************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\event.js ***!
+  \*****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
  * Этот модуль содержит инструменты для определения и вызова событий.
  */
 
-const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 // Менеджер событий
 class EventManager extends EventTarget {};
@@ -347,14 +347,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/core/units/i18n.js":
-/*!********************************!*\
-  !*** ./src/core/units/i18n.js ***!
-  \********************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\i18n.js":
+/*!****************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\i18n.js ***!
+  \****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { getValue } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const defaultLangMutate = __webpack_require__(/*! ../../../../../config/defaultLocalizationMutate.json */ "./config/defaultLocalizationMutate.json");
+const { getValue } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const defaultLangMutate = __webpack_require__(/*! ../../../../../config/defaultLocalizationMutate.json */ "TankiOnlineDebugTool\\config\\defaultLocalizationMutate.json");
 
 // TODO: Идет разработка транслятора
 //  В планах, перевести на них все сообщения ядра (а затем и модулей, с индивидуальными трансляторами)
@@ -444,10 +444,10 @@ module.exports = { Translator, unitSignals };
 
 /***/ }),
 
-/***/ "./src/core/units/logger.js":
-/*!**********************************!*\
-  !*** ./src/core/units/logger.js ***!
-  \**********************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\logger.js":
+/*!******************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\logger.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /**
@@ -458,9 +458,9 @@ module.exports = { Translator, unitSignals };
  *  Используйте отдельный модуль для переопределения любого из указанных классов
  */
 
-const { projectName } = __webpack_require__(/*! ../../../../../config/project */ "./config/project.js");
-const { styleLoggerProject, styleLoggerModule } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
-const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { projectName } = __webpack_require__(/*! ../../../../../config/project */ "TankiOnlineDebugTool\\config\\project.js");
+const { styleLoggerProject, styleLoggerModule } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
+const { consoleContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 /**
  * Класс для вывода информации в консоль браузера
@@ -541,17 +541,17 @@ module.exports = { LoggerBrowser, unitSignals };
 
 /***/ }),
 
-/***/ "./src/core/units/moduleListener.js":
-/*!******************************************!*\
-  !*** ./src/core/units/moduleListener.js ***!
-  \******************************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\moduleListener.js":
+/*!**************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\moduleListener.js ***!
+  \**************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { connectContext, globalContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { Module } = __webpack_require__(/*! ./moduleManager */ "./src/core/units/moduleManager.js");
-const { moduleListenerName } = __webpack_require__(/*! ../../../../../config/moduleConnection */ "./config/moduleConnection.js");
-const { GlobalEvent, CoreEvent } = __webpack_require__(/*! ./event */ "./src/core/units/event.js");
-const { sharedCore } = __webpack_require__(/*! ../../../../../src/utils/features */ "./src/utils/features.js");
+const { connectContext, globalContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { Module } = __webpack_require__(/*! ./moduleManager */ "TankiOnlineDebugTool\\src\\core\\units\\moduleManager.js");
+const { moduleListenerName } = __webpack_require__(/*! ../../../../../config/moduleConnection */ "TankiOnlineDebugTool\\config\\moduleConnection.js");
+const { GlobalEvent, CoreEvent } = __webpack_require__(/*! ./event */ "TankiOnlineDebugTool\\src\\core\\units\\event.js");
+const { sharedCore } = __webpack_require__(/*! ../../../../../src/utils/features */ "TankiOnlineDebugTool\\src\\utils\\features.js");
 
 class ListenerRecvEvent extends CoreEvent {
     recv = null;
@@ -833,6 +833,10 @@ class SharedModuleListener extends ModuleListener {
         sharedCore.templateList = null;
     }
 
+    installModule(module) {
+        this.callRecvObject(module);
+    }
+
     installModuleTemplate(moduleTemplate) {
         this.callRecvObject(moduleTemplate);
     }
@@ -885,10 +889,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/core/units/moduleManager.js":
-/*!*****************************************!*\
-  !*** ./src/core/units/moduleManager.js ***!
-  \*****************************************/
+/***/ "TankiOnlineDebugTool\\src\\core\\units\\moduleManager.js":
+/*!*************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\core\units\moduleManager.js ***!
+  \*************************************************************************************/
 /***/ ((module) => {
 
 /**
@@ -1235,15 +1239,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/libHelper/entry-development.js":
-/*!****************************************************!*\
-  !*** ./src/modules/libHelper/entry-development.js ***!
-  \****************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libHelper\\entry-development.js":
+/*!************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libHelper\entry-development.js ***!
+  \************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const moduleTemplate = __webpack_require__(/*! ./entry */ "./src/modules/libHelper/entry.js");
-const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
+const moduleTemplate = __webpack_require__(/*! ./entry */ "TankiOnlineDebugTool\\src\\modules\\libHelper\\entry.js");
+const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
 
 moduleTemplate.constructors.unshift((moduleContext) => {
     forceDebugContext[debugName] = (forceDebugContext[debugName] || {});
@@ -1260,13 +1264,13 @@ module.exports = moduleTemplate;
 
 /***/ }),
 
-/***/ "./src/modules/libHelper/entry.js":
-/*!****************************************!*\
-  !*** ./src/modules/libHelper/entry.js ***!
-  \****************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libHelper\\entry.js":
+/*!************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libHelper\entry.js ***!
+  \************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { moduleCreate } = __webpack_require__(/*! ../../../../../src/utils/module */ "./src/utils/module.js");
+const { moduleCreate } = __webpack_require__(/*! ../../../../../src/utils/module */ "TankiOnlineDebugTool\\src\\utils\\module.js");
 
 module.exports = moduleCreate('libHelper', ((moduleContext, coreContext) => {
     // moduleContext.info.name = 'Lib Helper';
@@ -1274,20 +1278,20 @@ module.exports = moduleCreate('libHelper', ((moduleContext, coreContext) => {
     // moduleContext.info.versionAlpha = true;
     // moduleContext.info.versionBeta = false;
     
-    moduleContext.units.register(__webpack_require__(/*! ./units/objectHelper */ "./src/modules/libHelper/units/objectHelper.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/functionHelper */ "./src/modules/libHelper/units/functionHelper.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/stringHelper */ "./src/modules/libHelper/units/stringHelper.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/linkHelper */ "./src/modules/libHelper/units/linkHelper.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/objectHelper */ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\objectHelper.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/functionHelper */ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\functionHelper.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/stringHelper */ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\stringHelper.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/linkHelper */ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\linkHelper.js"));
 }));
 
 
 
 /***/ }),
 
-/***/ "./src/modules/libHelper/units/functionHelper.js":
-/*!*******************************************************!*\
-  !*** ./src/modules/libHelper/units/functionHelper.js ***!
-  \*******************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\functionHelper.js":
+/*!***************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libHelper\units\functionHelper.js ***!
+  \***************************************************************************************************/
 /***/ ((module) => {
 
 class FunctionHook {
@@ -1354,13 +1358,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/libHelper/units/linkHelper.js":
-/*!***************************************************!*\
-  !*** ./src/modules/libHelper/units/linkHelper.js ***!
-  \***************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\linkHelper.js":
+/*!***********************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libHelper\units\linkHelper.js ***!
+  \***********************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { domContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { domContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 class LinkHelper {
     static getRoot(link) {
@@ -1426,10 +1430,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/libHelper/units/objectHelper.js":
-/*!*****************************************************!*\
-  !*** ./src/modules/libHelper/units/objectHelper.js ***!
-  \*****************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\objectHelper.js":
+/*!*************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libHelper\units\objectHelper.js ***!
+  \*************************************************************************************************/
 /***/ ((module) => {
 
 class ObjectHelper {
@@ -1468,10 +1472,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/libHelper/units/stringHelper.js":
-/*!*****************************************************!*\
-  !*** ./src/modules/libHelper/units/stringHelper.js ***!
-  \*****************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libHelper\\units\\stringHelper.js":
+/*!*************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libHelper\units\stringHelper.js ***!
+  \*************************************************************************************************/
 /***/ ((module) => {
 
 class FormatString {
@@ -1502,15 +1506,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/libWebpack/entry-development.js":
-/*!*****************************************************!*\
-  !*** ./src/modules/libWebpack/entry-development.js ***!
-  \*****************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\entry-development.js":
+/*!*************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libWebpack\entry-development.js ***!
+  \*************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const moduleTemplate = __webpack_require__(/*! ./entry */ "./src/modules/libWebpack/entry.js");
-const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
+const moduleTemplate = __webpack_require__(/*! ./entry */ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\entry.js");
+const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
 
 moduleTemplate.constructors.unshift((moduleContext) => {
     forceDebugContext[debugName] = (forceDebugContext[debugName] || {});
@@ -1527,13 +1531,13 @@ module.exports = moduleTemplate;
 
 /***/ }),
 
-/***/ "./src/modules/libWebpack/entry.js":
-/*!*****************************************!*\
-  !*** ./src/modules/libWebpack/entry.js ***!
-  \*****************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\entry.js":
+/*!*************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libWebpack\entry.js ***!
+  \*************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { moduleCreate } = __webpack_require__(/*! ../../../../../src/utils/module */ "./src/utils/module.js");
+const { moduleCreate } = __webpack_require__(/*! ../../../../../src/utils/module */ "TankiOnlineDebugTool\\src\\utils\\module.js");
 
 module.exports = moduleCreate('libWebpack', ((moduleContext, coreContext) => {
     // moduleContext.info.name = 'Lib Webpack';
@@ -1541,18 +1545,18 @@ module.exports = moduleCreate('libWebpack', ((moduleContext, coreContext) => {
     // moduleContext.info.versionAlpha = true;
     // moduleContext.info.versionBeta = false;
 
-    moduleContext.units.register(__webpack_require__(/*! ./units/webpackModuleManager */ "./src/modules/libWebpack/units/webpackModuleManager.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/advancedWebpackModuleManager */ "./src/modules/libWebpack/units/advancedWebpackModuleManager.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/webpackModuleManager */ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\units\\webpackModuleManager.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/advancedWebpackModuleManager */ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\units\\advancedWebpackModuleManager.js"));
 }));
 
 
 
 /***/ }),
 
-/***/ "./src/modules/libWebpack/units/advancedWebpackModuleManager.js":
-/*!**********************************************************************!*\
-  !*** ./src/modules/libWebpack/units/advancedWebpackModuleManager.js ***!
-  \**********************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\units\\advancedWebpackModuleManager.js":
+/*!******************************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libWebpack\units\advancedWebpackModuleManager.js ***!
+  \******************************************************************************************************************/
 /***/ ((module) => {
 
 class AdvancedWebpackModuleManager {
@@ -1670,10 +1674,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/libWebpack/units/webpackModuleManager.js":
-/*!**************************************************************!*\
-  !*** ./src/modules/libWebpack/units/webpackModuleManager.js ***!
-  \**************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\libWebpack\\units\\webpackModuleManager.js":
+/*!**********************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\libWebpack\units\webpackModuleManager.js ***!
+  \**********************************************************************************************************/
 /***/ ((module) => {
 
 /**
@@ -1977,15 +1981,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineHooks/entry-development.js":
-/*!***********************************************************!*\
-  !*** ./src/modules/tankionlineHooks/entry-development.js ***!
-  \***********************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\entry-development.js":
+/*!*******************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineHooks\entry-development.js ***!
+  \*******************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const moduleTemplate = __webpack_require__(/*! ./entry */ "./src/modules/tankionlineHooks/entry.js");
-const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
+const moduleTemplate = __webpack_require__(/*! ./entry */ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\entry.js");
+const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
 
 moduleTemplate.constructors.unshift((moduleContext) => {
     forceDebugContext[debugName] = (forceDebugContext[debugName] || {});
@@ -2002,13 +2006,13 @@ module.exports = moduleTemplate;
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineHooks/entry.js":
-/*!***********************************************!*\
-  !*** ./src/modules/tankionlineHooks/entry.js ***!
-  \***********************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\entry.js":
+/*!*******************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineHooks\entry.js ***!
+  \*******************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { moduleCreate, defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "./src/utils/module.js");
+const { moduleCreate, defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "TankiOnlineDebugTool\\src\\utils\\module.js");
 
 module.exports = moduleCreate('tankionlineHooks', ((moduleContext, coreContext) => {
     // moduleContext.info.name = 'Tanki Online: Hooks';
@@ -2016,19 +2020,19 @@ module.exports = moduleCreate('tankionlineHooks', ((moduleContext, coreContext) 
     // moduleContext.info.versionAlpha = true;
     // moduleContext.info.versionBeta = false;
     
-    moduleContext.units.register(__webpack_require__(/*! ./units/hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/hooks/battleMessagesHook */ "./src/modules/tankionlineHooks/units/hooks/battleMessagesHook.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/hooks/fastOpenContainerHook */ "./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/hookManager */ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hookManager.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/hooks/battleMessagesHook */ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hooks\\battleMessagesHook.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/hooks/fastOpenContainerHook */ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hooks\\fastOpenContainerHook.js"));
 }), defaultModuleCreateSignals);
 
 
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineHooks/units/hookManager.js":
-/*!***********************************************************!*\
-  !*** ./src/modules/tankionlineHooks/units/hookManager.js ***!
-  \***********************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hookManager.js":
+/*!*******************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineHooks\units\hookManager.js ***!
+  \*******************************************************************************************************/
 /***/ ((module) => {
 
 class TankiOnlineHook {
@@ -2139,13 +2143,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineHooks/units/hooks/battleMessagesHook.js":
-/*!************************************************************************!*\
-  !*** ./src/modules/tankionlineHooks/units/hooks/battleMessagesHook.js ***!
-  \************************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hooks\\battleMessagesHook.js":
+/*!********************************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineHooks\units\hooks\battleMessagesHook.js ***!
+  \********************************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js");
+const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hookManager.js");
 
 class TankiOnlineHookBattleMessages extends TankiOnlineHook {
     constructor(defaultEnabled, options) {
@@ -2316,13 +2320,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js":
-/*!***************************************************************************!*\
-  !*** ./src/modules/tankionlineHooks/units/hooks/fastOpenContainerHook.js ***!
-  \***************************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hooks\\fastOpenContainerHook.js":
+/*!***********************************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineHooks\units\hooks\fastOpenContainerHook.js ***!
+  \***********************************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "./src/modules/tankionlineHooks/units/hookManager.js");
+const { TankiOnlineHook } = __webpack_require__(/*! ./../hookManager */ "TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\units\\hookManager.js");
 
 class TankiOnlineHookFastOpenContainer extends TankiOnlineHook {
     constructor(defaultEnabled, options) {
@@ -2391,13 +2395,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineLoader/config.js":
-/*!*************************************************!*\
-  !*** ./src/modules/tankionlineLoader/config.js ***!
-  \*************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\config.js":
+/*!*********************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineLoader\config.js ***!
+  \*********************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { domContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { domContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 const baseGamePage = 'https://tankionline.com/play/';
 
@@ -2444,15 +2448,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineLoader/entry-development.js":
-/*!************************************************************!*\
-  !*** ./src/modules/tankionlineLoader/entry-development.js ***!
-  \************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\entry-development.js":
+/*!********************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineLoader\entry-development.js ***!
+  \********************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const moduleTemplate = __webpack_require__(/*! ./entry */ "./src/modules/tankionlineLoader/entry.js");
-const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
+const moduleTemplate = __webpack_require__(/*! ./entry */ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\entry.js");
+const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
 
 moduleTemplate.constructors.unshift((moduleContext) => {
     forceDebugContext[debugName] = (forceDebugContext[debugName] || {});
@@ -2469,13 +2473,13 @@ module.exports = moduleTemplate;
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineLoader/entry.js":
-/*!************************************************!*\
-  !*** ./src/modules/tankionlineLoader/entry.js ***!
-  \************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\entry.js":
+/*!********************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineLoader\entry.js ***!
+  \********************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { moduleCreate, defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "./src/utils/module.js");
+const { moduleCreate, defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "TankiOnlineDebugTool\\src\\utils\\module.js");
 
 module.exports = moduleCreate('tankionlineLoader', ((moduleContext, coreContext) => {
     // moduleContext.info.name = 'Tanki Online: Loader';
@@ -2483,22 +2487,22 @@ module.exports = moduleCreate('tankionlineLoader', ((moduleContext, coreContext)
     // moduleContext.info.versionAlpha = true;
     // moduleContext.info.versionBeta = false;
     
-    moduleContext.units.register(__webpack_require__(/*! ./units/gameLoader */ "./src/modules/tankionlineLoader/units/gameLoader.js"));
-    moduleContext.units.register(__webpack_require__(/*! ./units/gameScriptLoader */ "./src/modules/tankionlineLoader/units/gameScriptLoader.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/gameLoader */ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\units\\gameLoader.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/gameScriptLoader */ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\units\\gameScriptLoader.js"));
 }), defaultModuleCreateSignals);
 
 
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineLoader/units/gameLoader.js":
-/*!***********************************************************!*\
-  !*** ./src/modules/tankionlineLoader/units/gameLoader.js ***!
-  \***********************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\units\\gameLoader.js":
+/*!*******************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineLoader\units\gameLoader.js ***!
+  \*******************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { getDocument } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { getPageContentRewriteStatus, getBaseRewriteStatus } = __webpack_require__(/*! ./../config */ "./src/modules/tankionlineLoader/config.js");
+const { getDocument } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { getPageContentRewriteStatus, getBaseRewriteStatus } = __webpack_require__(/*! ./../config */ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\config.js");
 
 const unitSignals = {
     init: ((moduleContext, coreContext) => {
@@ -2589,14 +2593,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineLoader/units/gameScriptLoader.js":
-/*!*****************************************************************!*\
-  !*** ./src/modules/tankionlineLoader/units/gameScriptLoader.js ***!
-  \*****************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\units\\gameScriptLoader.js":
+/*!*************************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineLoader\units\gameScriptLoader.js ***!
+  \*************************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { paramOriginalScript, paramOriginalPage, mutatePage, mutateScript, getGameInfo } = __webpack_require__(/*! ./../config */ "./src/modules/tankionlineLoader/config.js");
-const { getDocument, domContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
+const { paramOriginalScript, paramOriginalPage, mutatePage, mutateScript, getGameInfo } = __webpack_require__(/*! ./../config */ "TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\config.js");
+const { getDocument, domContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
 
 class NetworkUtils {
     static async getContent(linkPage, linkReferer) {
@@ -2732,11 +2736,11 @@ class ScriptLoader {
                     mainScriptWebpackModuleManager: 'es4'
                 };
             }), ((scriptContent) => {
-                const webpackInfo = /\(this,\(\(\)=>\(\(\)=>{var[ \t]+[^=]{1,4}=({.*}),n={};function[ \t]+i\(r\)/.exec(scriptContent);
+                const webpackInfo = /\(this,\(\(\)=>\(\(\)=>{var[ \t]+[^=\(\)]{1,4}=({.*}),n={};function[ \t]+[^=\(\)]{1,4}\([^=\(\)]{1,4}\).{0,8192}$/.exec(scriptContent);
                 if(!webpackInfo) {
                     return null;
                 }
-                const searchPublic = /,i.p="(.*)"((?:,i\(\d+\))+)/.exec(scriptContent);
+                const searchPublic = /,i.p="(.*)"((?:,i\(\d+\))+).{0,512}$/.exec(scriptContent);
                 if (!searchPublic) {
                     return null;
                 }
@@ -2803,15 +2807,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineWebpack/entry-development.js":
-/*!*************************************************************!*\
-  !*** ./src/modules/tankionlineWebpack/entry-development.js ***!
-  \*************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineWebpack\\entry-development.js":
+/*!*********************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineWebpack\entry-development.js ***!
+  \*********************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const moduleTemplate = __webpack_require__(/*! ./entry */ "./src/modules/tankionlineWebpack/entry.js");
-const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "./src/utils/context.js");
-const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "./config/debug.js");
+const moduleTemplate = __webpack_require__(/*! ./entry */ "TankiOnlineDebugTool\\src\\modules\\tankionlineWebpack\\entry.js");
+const { forceDebugContext } = __webpack_require__(/*! ../../../../../src/utils/context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { debugName } = __webpack_require__(/*! ../../../../../config/debug */ "TankiOnlineDebugTool\\config\\debug.js");
 
 moduleTemplate.constructors.unshift((moduleContext) => {
     forceDebugContext[debugName] = (forceDebugContext[debugName] || {});
@@ -2828,13 +2832,13 @@ module.exports = moduleTemplate;
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineWebpack/entry.js":
-/*!*************************************************!*\
-  !*** ./src/modules/tankionlineWebpack/entry.js ***!
-  \*************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineWebpack\\entry.js":
+/*!*********************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineWebpack\entry.js ***!
+  \*********************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { moduleCreate, defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "./src/utils/module.js");
+const { moduleCreate, defaultModuleCreateSignals } = __webpack_require__(/*! ../../../../../src/utils/module */ "TankiOnlineDebugTool\\src\\utils\\module.js");
 
 module.exports = moduleCreate('tankionlineWebpack', ((moduleContext, coreContext) => {
     // moduleContext.info.name = 'Tanki Online: Webpack';
@@ -2842,17 +2846,17 @@ module.exports = moduleCreate('tankionlineWebpack', ((moduleContext, coreContext
     // moduleContext.info.versionAlpha = true;
     // moduleContext.info.versionBeta = false;
     
-    moduleContext.units.register(__webpack_require__(/*! ./units/webpackStorage */ "./src/modules/tankionlineWebpack/units/webpackStorage.js"));
+    moduleContext.units.register(__webpack_require__(/*! ./units/webpackStorage */ "TankiOnlineDebugTool\\src\\modules\\tankionlineWebpack\\units\\webpackStorage.js"));
 }), defaultModuleCreateSignals);
 
 
 
 /***/ }),
 
-/***/ "./src/modules/tankionlineWebpack/units/webpackStorage.js":
-/*!****************************************************************!*\
-  !*** ./src/modules/tankionlineWebpack/units/webpackStorage.js ***!
-  \****************************************************************/
+/***/ "TankiOnlineDebugTool\\src\\modules\\tankionlineWebpack\\units\\webpackStorage.js":
+/*!************************************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\modules\tankionlineWebpack\units\webpackStorage.js ***!
+  \************************************************************************************************************/
 /***/ ((module) => {
 
 const unitSignals = {
@@ -2872,10 +2876,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/utils/context.js":
-/*!******************************!*\
-  !*** ./src/utils/context.js ***!
-  \******************************/
+/***/ "TankiOnlineDebugTool\\src\\utils\\context.js":
+/*!**************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\utils\context.js ***!
+  \**************************************************************************/
 /***/ ((module) => {
 
 const localGlobalContext = (() => {
@@ -2973,10 +2977,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/utils/features.js":
-/*!*******************************!*\
-  !*** ./src/utils/features.js ***!
-  \*******************************/
+/***/ "TankiOnlineDebugTool\\src\\utils\\features.js":
+/*!***************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\utils\features.js ***!
+  \***************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -2991,15 +2995,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/utils/module.js":
-/*!*****************************!*\
-  !*** ./src/utils/module.js ***!
-  \*****************************/
+/***/ "TankiOnlineDebugTool\\src\\utils\\module.js":
+/*!*************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\src\utils\module.js ***!
+  \*************************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-const { connectContext } = __webpack_require__(/*! ./context */ "./src/utils/context.js");
-const { moduleListenerName } = __webpack_require__(/*! ../../../../../config/moduleConnection */ "./config/moduleConnection.js");
-const { sharedCore } = __webpack_require__(/*! ./features */ "./src/utils/features.js");
+const { connectContext } = __webpack_require__(/*! ./context */ "TankiOnlineDebugTool\\src\\utils\\context.js");
+const { moduleListenerName } = __webpack_require__(/*! ../../../../../config/moduleConnection */ "TankiOnlineDebugTool\\config\\moduleConnection.js");
+const { sharedCore } = __webpack_require__(/*! ./features */ "TankiOnlineDebugTool\\src\\utils\\features.js");
 
 class ListenerRegisterEvent extends Event {
     status = null;
@@ -3112,10 +3116,10 @@ module.exports = { moduleCreate, defaultModuleCreateSignals };
 
 /***/ }),
 
-/***/ "./config/defaultLocalizationMutate.json":
-/*!***********************************************!*\
-  !*** ./config/defaultLocalizationMutate.json ***!
-  \***********************************************/
+/***/ "TankiOnlineDebugTool\\config\\defaultLocalizationMutate.json":
+/*!*******************************************************************************************!*\
+  !*** S:\Ivan\Documents\GitHub\TankiOnlineDebugTool\config\defaultLocalizationMutate.json ***!
+  \*******************************************************************************************/
 /***/ ((module) => {
 
 "use strict";
@@ -3154,12 +3158,12 @@ module.exports = JSON.parse('{"ru":"ru-RU","en":"en-US","default":"ru"}');
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	__webpack_require__("./src/modules/libHelper/entry-development.js");
-/******/ 	__webpack_require__("./src/modules/libWebpack/entry-development.js");
-/******/ 	__webpack_require__("./src/modules/tankionlineHooks/entry-development.js");
-/******/ 	__webpack_require__("./src/modules/tankionlineLoader/entry-development.js");
-/******/ 	__webpack_require__("./src/modules/tankionlineWebpack/entry-development.js");
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/core/entry-development.js");
+/******/ 	__webpack_require__("TankiOnlineDebugTool\\src\\modules\\libHelper\\entry-development.js");
+/******/ 	__webpack_require__("TankiOnlineDebugTool\\src\\modules\\libWebpack\\entry-development.js");
+/******/ 	__webpack_require__("TankiOnlineDebugTool\\src\\modules\\tankionlineHooks\\entry-development.js");
+/******/ 	__webpack_require__("TankiOnlineDebugTool\\src\\modules\\tankionlineLoader\\entry-development.js");
+/******/ 	__webpack_require__("TankiOnlineDebugTool\\src\\modules\\tankionlineWebpack\\entry-development.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("TankiOnlineDebugTool\\src\\core\\entry-development.js");
 /******/ 	
 /******/ })()
 ;

@@ -135,11 +135,11 @@ class ScriptLoader {
                     mainScriptWebpackModuleManager: 'es4'
                 };
             }), ((scriptContent) => {
-                const webpackInfo = /\(this,\(\(\)=>\(\(\)=>{var[ \t]+[^=]{1,4}=({.*}),n={};function[ \t]+i\(r\)/.exec(scriptContent);
+                const webpackInfo = /\(this,\(\(\)=>\(\(\)=>{var[ \t]+[^=\(\)]{1,4}=({.*}),n={};function[ \t]+[^=\(\)]{1,4}\([^=\(\)]{1,4}\).{0,8192}$/.exec(scriptContent);
                 if(!webpackInfo) {
                     return null;
                 }
-                const searchPublic = /,i.p="(.*)"((?:,i\(\d+\))+)/.exec(scriptContent);
+                const searchPublic = /,i.p="(.*)"((?:,i\(\d+\))+).{0,512}$/.exec(scriptContent);
                 if (!searchPublic) {
                     return null;
                 }

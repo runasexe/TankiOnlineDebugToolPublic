@@ -284,6 +284,10 @@ class SharedModuleListener extends ModuleListener {
         sharedCore.templateList = null;
     }
 
+    installModule(module) {
+        this.callRecvObject(module);
+    }
+
     installModuleTemplate(moduleTemplate) {
         this.callRecvObject(moduleTemplate);
     }
